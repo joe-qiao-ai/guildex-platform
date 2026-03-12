@@ -287,6 +287,48 @@ describe('skills.listPublicPageV2', () => {
     )
   })
 
+  it('falls back to db.get(latestVersionId) when latestVersionSummary is absent', async () => {
+    const oldRow = makeSkill('skills:old', 'old', 'users:1', 'skillVersions:1')
+    // Simulate a pre-backfill digest row without latestVersionSummary
+    delete (oldRow as Record<string, unknown>).latestVersionSummary
+
+    const paginateMock = vi.fn().mockResolvedValue({
+      page: [oldRow],
+      continueCursor: 'next-cursor',
+      isDone: false,
+      pageStatus: null,
+      splitCursor: null,
+    })
+    const getMock = vi.fn(async (id: string) => {
+      if (id.startsWith('users:')) return makeUser(id)
+      if (id.startsWith('skillVersions:')) return makeVersion(id)
+      return null
+    })
+    const ctx = {
+      db: {
+        query: vi.fn(() => ({
+          withIndex: vi.fn(() => ({
+            order: vi.fn(() => ({ paginate: paginateMock })),
+          })),
+        })),
+        get: getMock,
+      },
+    }
+
+    const result = await listPublicPageV2Handler(ctx, {
+      paginationOpts: { cursor: null, numItems: 25 },
+      sort: 'downloads',
+      dir: 'desc',
+      highlightedOnly: false,
+      nonSuspiciousOnly: false,
+    })
+
+    expect(result.page).toHaveLength(1)
+    expect(result.page[0]?.skill.slug).toBe('old')
+    // Should have fetched the version doc via db.get
+    expect(getMock).toHaveBeenCalledWith('skillVersions:1')
+  })
+
   it('does not swallow non-cursor paginate errors', async () => {
     const paginateMock = vi.fn().mockRejectedValue(new Error('database unavailable'))
     const ctx = {
