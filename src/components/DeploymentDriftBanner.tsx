@@ -2,6 +2,7 @@ import { useQueries } from 'convex/react'
 import { Component, useEffect, type ReactNode } from 'react'
 import { api } from '../../convex/_generated/api'
 import { getDeploymentDriftInfo } from '../lib/deploymentDrift'
+import { getRuntimeEnv } from '../lib/runtimeEnv'
 
 const DEPLOYMENT_INFO_QUERY = {
   deploymentInfo: {
@@ -11,7 +12,7 @@ const DEPLOYMENT_INFO_QUERY = {
 } as const
 
 function getFrontendBuildSha() {
-  return import.meta.env.VITE_APP_BUILD_SHA?.trim() || null
+  return getRuntimeEnv('VITE_APP_BUILD_SHA') ?? null
 }
 
 type DeploymentDriftBannerBoundaryProps = {

@@ -1,4 +1,5 @@
 import type { Doc } from '../../convex/_generated/dataModel'
+import { getRuntimeEnv } from '../lib/runtimeEnv'
 import { type LlmAnalysis, SecurityScanResults } from './SkillSecurityScanResults'
 
 type SkillVersionsPanelProps = {
@@ -16,6 +17,7 @@ export function SkillVersionsPanel({
   suppressScanResults,
   suppressedMessage,
 }: SkillVersionsPanelProps) {
+  const convexSiteUrl = getRuntimeEnv('VITE_CONVEX_SITE_URL') ?? 'https://clawhub.ai'
   return (
     <div className="tab-body">
       <div>
@@ -56,7 +58,7 @@ export function SkillVersionsPanel({
                 <div className="version-actions">
                   <a
                     className="btn version-zip"
-                    href={`${import.meta.env.VITE_CONVEX_SITE_URL}/api/v1/download?slug=${skillSlug}&version=${version.version}`}
+                    href={`${convexSiteUrl}/api/v1/download?slug=${skillSlug}&version=${version.version}`}
                   >
                     Zip
                   </a>

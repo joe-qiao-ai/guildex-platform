@@ -9,6 +9,7 @@ import type { Doc, Id } from '../../convex/_generated/dataModel'
 import { getSkillBadges } from '../lib/badges'
 import { formatCompactStat, formatSkillStatsTriplet } from '../lib/numberFormat'
 import type { PublicSkill, PublicUser } from '../lib/publicUser'
+import { getRuntimeEnv } from '../lib/runtimeEnv'
 import { type LlmAnalysis, SecurityScanResults } from './SkillSecurityScanResults'
 import { SkillInstallCard } from './SkillInstallCard'
 import { UserBadge } from './UserBadge'
@@ -113,6 +114,7 @@ export function SkillHeader({
   clawdis,
   osLabels,
 }: SkillHeaderProps) {
+  const convexSiteUrl = getRuntimeEnv('VITE_CONVEX_SITE_URL') ?? 'https://clawhub.ai'
   const formattedStats = formatSkillStatsTriplet(skill.stats)
   const suppressScanResults =
     !isStaff &&
@@ -290,7 +292,7 @@ export function SkillHeader({
               {!nixPlugin && !modInfo?.isMalwareBlocked && !modInfo?.isRemoved ? (
                 <a
                   className="btn btn-primary"
-                  href={`${import.meta.env.VITE_CONVEX_SITE_URL}/api/v1/download?slug=${skill.slug}`}
+                  href={`${convexSiteUrl}/api/v1/download?slug=${skill.slug}`}
                 >
                   Download zip
                 </a>

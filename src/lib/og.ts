@@ -1,4 +1,5 @@
 import { getClawHubSiteUrl, getOnlyCrabsSiteUrl } from './site'
+import { getRuntimeEnv } from './runtimeEnv'
 
 type SkillMetaSource = {
   slug: string
@@ -47,7 +48,7 @@ export function getSoulSiteUrl() {
 }
 
 export function getApiBase() {
-  const explicit = import.meta.env.VITE_CONVEX_SITE_URL?.trim()
+  const explicit = getRuntimeEnv('VITE_CONVEX_SITE_URL')
   return explicit || getSiteUrl()
 }
 

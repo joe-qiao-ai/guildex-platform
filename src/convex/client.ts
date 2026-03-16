@@ -1,5 +1,8 @@
 import { ConvexHttpClient } from 'convex/browser'
 import { ConvexReactClient } from 'convex/react'
+import { getRequiredRuntimeEnv } from '../lib/runtimeEnv'
 
-export const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string)
-export const convexHttp = new ConvexHttpClient(import.meta.env.VITE_CONVEX_URL as string)
+const convexUrl = getRequiredRuntimeEnv('VITE_CONVEX_URL')
+
+export const convex = new ConvexReactClient(convexUrl)
+export const convexHttp = new ConvexHttpClient(convexUrl)

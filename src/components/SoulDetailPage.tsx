@@ -7,6 +7,7 @@ import type { Doc } from '../../convex/_generated/dataModel'
 import { SoulStatsTripletLine } from './SoulStats'
 import type { PublicSoul, PublicUser } from '../lib/publicUser'
 import { isModerator } from '../lib/roles'
+import { getRuntimeEnv } from '../lib/runtimeEnv'
 import { useAuthStatus } from '../lib/useAuthStatus'
 import { stripFrontmatter } from './skillDetailUtils'
 
@@ -126,7 +127,8 @@ export function SoulDetailPage({ slug }: SoulDetailPageProps) {
   }
 
   const ownerHandle = owner?.handle ?? owner?.name ?? null
-  const downloadBase = `${import.meta.env.VITE_CONVEX_SITE_URL}/api/v1/souls/${soul.slug}/file`
+  const convexSiteUrl = getRuntimeEnv('VITE_CONVEX_SITE_URL') ?? 'https://clawhub.ai'
+  const downloadBase = `${convexSiteUrl}/api/v1/souls/${soul.slug}/file`
 
   return (
     <main className="section">

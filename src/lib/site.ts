@@ -1,14 +1,11 @@
 export type SiteMode = 'skills' | 'souls'
 
+import { getRuntimeEnv } from './runtimeEnv'
+
 const DEFAULT_CLAWHUB_SITE_URL = 'https://clawhub.ai'
 const DEFAULT_ONLYCRABS_SITE_URL = 'https://onlycrabs.ai'
 const DEFAULT_ONLYCRABS_HOST = 'onlycrabs.ai'
 const LEGACY_CLAWDHUB_HOSTS = new Set(['clawdhub.com', 'www.clawdhub.com', 'auth.clawdhub.com'])
-
-function readMetaEnv(value?: string | null) {
-  const trimmed = value?.trim()
-  return trimmed ? trimmed : undefined
-}
 
 export function normalizeClawHubSiteOrigin(value?: string | null) {
   if (!value) return null
@@ -24,14 +21,14 @@ export function normalizeClawHubSiteOrigin(value?: string | null) {
 }
 
 export function getClawHubSiteUrl() {
-  return normalizeClawHubSiteOrigin(readMetaEnv(import.meta.env.VITE_SITE_URL)) ?? DEFAULT_CLAWHUB_SITE_URL
+  return normalizeClawHubSiteOrigin(getRuntimeEnv('VITE_SITE_URL')) ?? DEFAULT_CLAWHUB_SITE_URL
 }
 
 export function getOnlyCrabsSiteUrl() {
-  const explicit = readMetaEnv(import.meta.env.VITE_SOULHUB_SITE_URL)
+  const explicit = getRuntimeEnv('VITE_SOULHUB_SITE_URL')
   if (explicit) return explicit
 
-  const siteUrl = readMetaEnv(import.meta.env.VITE_SITE_URL)
+  const siteUrl = getRuntimeEnv('VITE_SITE_URL')
   if (siteUrl) {
     try {
       const url = new URL(siteUrl)
@@ -51,7 +48,7 @@ export function getOnlyCrabsSiteUrl() {
 }
 
 export function getOnlyCrabsHost() {
-  return readMetaEnv(import.meta.env.VITE_SOULHUB_HOST) ?? DEFAULT_ONLYCRABS_HOST
+  return getRuntimeEnv('VITE_SOULHUB_HOST') ?? DEFAULT_ONLYCRABS_HOST
 }
 
 export function detectSiteMode(host?: string | null): SiteMode {
@@ -76,13 +73,13 @@ export function getSiteMode(): SiteMode {
   if (typeof window !== 'undefined') {
     return detectSiteMode(window.location.hostname)
   }
-  const forced = readMetaEnv(import.meta.env.VITE_SITE_MODE)
+  const forced = getRuntimeEnv('VITE_SITE_MODE')
   if (forced === 'souls' || forced === 'skills') return forced
 
-  const onlyCrabsSite = readMetaEnv(import.meta.env.VITE_SOULHUB_SITE_URL)
+  const onlyCrabsSite = getRuntimeEnv('VITE_SOULHUB_SITE_URL')
   if (onlyCrabsSite) return detectSiteModeFromUrl(onlyCrabsSite)
 
-  const siteUrl = readMetaEnv(import.meta.env.VITE_SITE_URL) ?? process.env.SITE_URL
+  const siteUrl = getRuntimeEnv('VITE_SITE_URL') ?? process.env.SITE_URL
   if (siteUrl) return detectSiteModeFromUrl(siteUrl)
 
   return 'skills'

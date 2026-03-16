@@ -7,6 +7,7 @@ import { ClientOnly } from '../components/ClientOnly'
 import { DeploymentDriftBanner } from '../components/DeploymentDriftBanner'
 import { Footer } from '../components/Footer'
 import Header from '../components/Header'
+import { isDevRuntime } from '../lib/runtimeEnv'
 import { getSiteDescription, getSiteMode, getSiteName, getSiteUrlForMode } from '../lib/site'
 
 import appCss from '../styles.css?url'
@@ -110,13 +111,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <AppProviders>
           <div className="app-shell">
             <Header />
-            <DeploymentDriftBanner />
+            <ClientOnly>
+              <DeploymentDriftBanner />
+            </ClientOnly>
             {children}
             <Footer />
           </div>
           <ClientOnly>
             <Analytics />
-            {import.meta.env.DEV ? (
+            {isDevRuntime() ? (
               <TanStackDevtools
                 config={{
                   position: 'bottom-right',
