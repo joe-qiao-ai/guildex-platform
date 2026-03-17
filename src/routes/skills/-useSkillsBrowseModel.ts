@@ -83,8 +83,9 @@ export function useSkillsBrowseModel({
           })
           if (generation !== fetchGeneration.current) return
           setListResults((prev) => (cursor ? [...prev, ...result.page] : result.page))
-          setListCursor(result.hasMore ? (result.nextCursor ?? null) : null)
-          setListStatus(result.hasMore ? 'idle' : 'done')
+          const canAdvance = result.hasMore && result.nextCursor != null
+          setListCursor(canAdvance ? result.nextCursor : null)
+          setListStatus(canAdvance ? 'idle' : 'done')
         } else {
           const result = await convexHttp.query(api.skills.listPublicPageV3, {
             paginationOpts: { cursor, numItems: pageSize },
