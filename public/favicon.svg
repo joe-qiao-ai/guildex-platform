@@ -1,6 +1,11 @@
 <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-  <rect width="32" height="32" rx="8" fill="#0a0a0a"/>
-  <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle"
-        font-family="system-ui, -apple-system, sans-serif"
-        font-weight="700" font-size="20" fill="#6366f1">G</text>
+  <defs>
+    <radialGradient id="g" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#a5b4fc"/>
+      <stop offset="60%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </radialGradient>
+  </defs>
+  <circle cx="16" cy="16" r="14" fill="url(#g)"/>
+  <circle cx="16" cy="16" r="14" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
 </svg>
