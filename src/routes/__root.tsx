@@ -8,7 +8,7 @@ import { DeploymentDriftBanner } from "../components/DeploymentDriftBanner";
 import { Footer } from "../components/Footer";
 import Header from "../components/Header";
 import { isDevRuntime } from "../lib/runtimeEnv";
-import { getSiteDescription, getSiteMode, getSiteName, getSiteUrlForMode } from "../lib/site";
+import { getSiteDescription, getSiteMode, getSiteName, getSiteOgDescription, getSiteOgTitle, getSiteUrlForMode } from "../lib/site";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
@@ -16,6 +16,8 @@ export const Route = createRootRoute({
     const mode = getSiteMode();
     const siteName = getSiteName(mode);
     const siteDescription = getSiteDescription(mode);
+    const ogTitle = getSiteOgTitle(mode);
+    const ogDescription = getSiteOgDescription(mode);
     const siteUrl = getSiteUrlForMode(mode);
     const ogImage = `${siteUrl}/og.png`;
 
@@ -45,11 +47,11 @@ export const Route = createRootRoute({
         },
         {
           property: "og:title",
-          content: siteName,
+          content: ogTitle,
         },
         {
           property: "og:description",
-          content: siteDescription,
+          content: ogDescription,
         },
         {
           property: "og:image",
@@ -65,7 +67,7 @@ export const Route = createRootRoute({
         },
         {
           property: "og:image:alt",
-          content: `${siteName} — ${siteDescription}`,
+          content: `${ogTitle} — ${ogDescription}`,
         },
         {
           name: "twitter:card",
@@ -73,11 +75,11 @@ export const Route = createRootRoute({
         },
         {
           name: "twitter:title",
-          content: siteName,
+          content: ogTitle,
         },
         {
           name: "twitter:description",
-          content: siteDescription,
+          content: ogDescription,
         },
         {
           name: "twitter:image",
@@ -85,7 +87,7 @@ export const Route = createRootRoute({
         },
         {
           name: "twitter:image:alt",
-          content: `${siteName} — ${siteDescription}`,
+          content: `${ogTitle} — ${ogDescription}`,
         },
       ],
       links: [

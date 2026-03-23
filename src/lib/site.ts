@@ -2,7 +2,7 @@ export type SiteMode = "skills" | "souls";
 
 import { getRuntimeEnv } from "./runtimeEnv";
 
-const DEFAULT_CLAWHUB_SITE_URL = "https://clawhub.ai";
+const DEFAULT_CLAWHUB_SITE_URL = "https://guildex.ai";
 const DEFAULT_ONLYCRABS_SITE_URL = "https://onlycrabs.ai";
 const DEFAULT_ONLYCRABS_HOST = "onlycrabs.ai";
 const LEGACY_CLAWDHUB_HOSTS = new Set(["clawdhub.com", "www.clawdhub.com", "auth.clawdhub.com"]);
@@ -90,9 +90,15 @@ export function getSiteName(mode: SiteMode = getSiteMode()) {
 }
 
 export function getSiteDescription(mode: SiteMode = getSiteMode()) {
-  return mode === "souls"
-    ? "Guildex · The AI Talent Network — share and discover AI Talent with real expertise."
-    : "Guildex · The AI Talent Network — find the AI Talent you need. Get their real expertise and judgment.";
+  return "Guildex is the AI Talent Network. Find the AI talent you need. Get their real expertise and judgment.";
+}
+
+export function getSiteOgDescription(_mode: SiteMode = getSiteMode()) {
+  return "Browse, download, and deploy AI talent built on real expertise and real personality. Not generic AI.";
+}
+
+export function getSiteOgTitle(_mode: SiteMode = getSiteMode()) {
+  return "Guildex · The AI Talent Network";
 }
 
 export function getSiteUrlForMode(mode: SiteMode = getSiteMode()) {
