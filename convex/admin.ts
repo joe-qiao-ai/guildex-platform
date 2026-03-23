@@ -130,7 +130,7 @@ export const resetGlobalStats = internalMutation(async ({ db }) => {
   if (existing) {
     await db.patch(existing._id, { activeSkillsCount: 138, updatedAt: now });
   } else {
-    await db.insert("globalStats", { activeSkillsCount: 138, updatedAt: now });
+    await db.insert("globalStats", { key: "global", activeSkillsCount: 138, updatedAt: now });
   }
   return { set: 138 };
 });

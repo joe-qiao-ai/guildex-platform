@@ -4,10 +4,10 @@ import {
   PLATFORM_SKILL_LICENSE,
   PLATFORM_SKILL_LICENSE_SUMMARY,
 } from "clawhub-schema";
-import { Package } from "lucide-react";
+// import { Package } from "lucide-react"; // unused
 import type { Doc, Id } from "../../convex/_generated/dataModel";
 import { getSkillBadges } from "../lib/badges";
-import { formatCompactStat, formatSkillStatsTriplet } from "../lib/numberFormat";
+// import { formatSkillStatsTriplet } from "../lib/numberFormat"; // unused after refactor
 import type { PublicSkill, PublicUser } from "../lib/publicUser";
 import { getRuntimeEnv } from "../lib/runtimeEnv";
 import { SkillInstallCard } from "./SkillInstallCard";
@@ -115,7 +115,6 @@ export function SkillHeader({
   osLabels,
 }: SkillHeaderProps) {
   const convexSiteUrl = getRuntimeEnv("VITE_CONVEX_SITE_URL") ?? "https://clawhub.ai";
-  const formattedStats = formatSkillStatsTriplet(skill.stats);
   const suppressScanResults =
     !isStaff &&
     Boolean(modInfo?.overrideActive) &&

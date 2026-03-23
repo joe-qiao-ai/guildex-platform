@@ -281,7 +281,7 @@ async function main() {
 
     try {
       const cmd = `cd ~/Documents/公司知识库/项目/数字人平台/guildex && export PATH="$HOME/.bun/bin:$PATH" && bunx convex run --no-push seedPersonas:seedPersonaMutation '${args.replace(/'/g, "'\\''")}'`;
-      const out = execSync(cmd, { shell: "/bin/zsh", timeout: 30000, encoding: "utf-8" });
+      void execSync(cmd, { shell: "/bin/zsh", timeout: 30000, encoding: "utf-8" });
       console.log(`  ✅ ${persona.displayName}`);
       successCount++;
       results.push({ slug: persona.slug, name: persona.displayName, ok: true });

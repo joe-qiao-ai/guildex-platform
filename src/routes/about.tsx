@@ -143,9 +143,6 @@ function About() {
               q: undefined,
               sort: undefined,
               dir: undefined,
-              highlighted: undefined,
-              nonSuspicious: true,
-              view: undefined,
               focus: undefined,
             }}
             className="btn btn-primary"

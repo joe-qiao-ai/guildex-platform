@@ -17,7 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 
 export default function Header() {
   const { isAuthenticated, isLoading, me } = useAuthStatus();
@@ -75,9 +74,6 @@ export default function Header() {
               q: undefined,
               sort: undefined,
               dir: undefined,
-              highlighted: undefined,
-              nonSuspicious: undefined,
-              view: undefined,
               focus: undefined,
             }}
           >
@@ -109,9 +105,6 @@ export default function Header() {
                       q: undefined,
                       sort: undefined,
                       dir: undefined,
-                      highlighted: undefined,
-                      nonSuspicious: undefined,
-                      view: undefined,
                       focus: undefined,
                     }}
                   >

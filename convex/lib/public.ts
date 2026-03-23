@@ -31,6 +31,8 @@ export type PublicSkill = Pick<
   | "featuredQuote"
   | "category"
   | "rating"
+  | "trendingScore"
+  | "statsDownloads"
   | "verifiedCreator"
   // AI Twin v3 fields
   | "title"

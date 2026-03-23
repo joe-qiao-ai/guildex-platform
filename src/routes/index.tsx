@@ -9,7 +9,7 @@ import { SoulCard } from "../components/SoulCard";
 import { SoulStatsTripletLine } from "../components/SoulStats";
 import { UserBadge } from "../components/UserBadge";
 import { convexHttp } from "../convex/client";
-import { getSkillBadges } from "../lib/badges";
+// import { getSkillBadges } from "../lib/badges"; // unused
 import type { PublicSkill, PublicSoul, PublicUser } from "../lib/publicUser";
 import { getSiteMode } from "../lib/site";
 
@@ -30,7 +30,7 @@ function SkillsHome() {
     latestVersion?: unknown;
   };
 
-  const [highlighted, setHighlighted] = useState<SkillPageEntry[]>([]);
+  const [_highlighted, setHighlighted] = useState<SkillPageEntry[]>([]);
   const [popular, setPopular] = useState<SkillPageEntry[]>([]);
   const totalSkills = useQuery(api.skills.countPublicSkills);
   const totalSkillsText =
@@ -108,9 +108,6 @@ function SkillsHome() {
                   q: undefined,
                   sort: undefined,
                   dir: undefined,
-                  highlighted: undefined,
-                  nonSuspicious: true,
-                  view: undefined,
                   focus: undefined,
                 }}
                 className="btn btn-primary"
@@ -167,9 +164,6 @@ function SkillsHome() {
               q: undefined,
               sort: undefined,
               dir: undefined,
-              highlighted: undefined,
-              nonSuspicious: true,
-              view: undefined,
               focus: undefined,
             }}
             className="btn"
@@ -275,7 +269,6 @@ function OnlyCrabsHome() {
                   q: undefined,
                   sort: undefined,
                   dir: undefined,
-                  view: undefined,
                   focus: undefined,
                 }}
                 className="btn"
@@ -295,7 +288,6 @@ function OnlyCrabsHome() {
                     q: trimmedQuery || undefined,
                     sort: undefined,
                     dir: undefined,
-                    view: undefined,
                     focus: undefined,
                   },
                 });
@@ -344,7 +336,6 @@ function OnlyCrabsHome() {
               q: undefined,
               sort: undefined,
               dir: undefined,
-              view: undefined,
               focus: undefined,
             }}
             className="btn"

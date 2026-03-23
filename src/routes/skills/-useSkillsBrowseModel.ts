@@ -65,7 +65,7 @@ export function useSkillsBrowseModel({
         const result = await convexHttp.query(api.skills.listPublicPageV4, {
           cursor: cursor ?? undefined,
           numItems: pageSize,
-          sort: listSort,
+          sort: listSort as "newest" | "updated" | "downloads" | "installs" | "stars" | "name" | undefined,
           dir,
           highlightedOnly: false,
           nonSuspiciousOnly: false,

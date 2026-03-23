@@ -95,6 +95,7 @@ export function digestToHydratableSkill(digest: Doc<"skillSearchDigest">): Hydra
     _creationTime: digest.createdAt,
     // Cast category from string to the union expected by HydratableSkill
     category: base.category as HydratableSkill["category"],
+    securityScan: digest.securityScan as "pending" | "safe" | "warning" | "rejected" | undefined,
   };
 }
 
