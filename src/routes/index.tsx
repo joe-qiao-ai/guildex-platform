@@ -32,6 +32,28 @@ function SkillsHome() {
 
   const [highlighted, setHighlighted] = useState<SkillPageEntry[]>([]);
   const [popular, setPopular] = useState<SkillPageEntry[]>([]);
+  const totalSkills = useQuery(api.skills.countPublicSkills);
+  const totalSkillsText =
+    typeof totalSkills === "number" ? totalSkills.toLocaleString("en-US") : null;
+  const CATEGORIES = [
+    { label: "Famous Figure Style", darkColor: "rgba(139,92,246,0.15)" },
+    { label: "Investing & Finance", darkColor: "rgba(16,185,129,0.15)" },
+    { label: "Tech & AI", darkColor: "rgba(59,130,246,0.15)" },
+    { label: "Entrepreneurship", darkColor: "rgba(249,115,22,0.15)" },
+    { label: "Leadership & Change", darkColor: "rgba(232,121,249,0.15)" },
+    { label: "Writing & Media", darkColor: "rgba(250,204,21,0.15)" },
+    { label: "Philosophy & Wisdom", darkColor: "rgba(129,140,248,0.15)" },
+    { label: "Science & Learning", darkColor: "rgba(45,212,191,0.15)" },
+    { label: "Performance & Mindset", darkColor: "rgba(251,146,60,0.15)" },
+    { label: "Sales & Influence", darkColor: "rgba(74,222,128,0.15)" },
+    { label: "Engineering", darkColor: "rgba(56,189,248,0.15)" },
+    { label: "Marketing", darkColor: "rgba(244,114,182,0.15)" },
+    { label: "Design", darkColor: "rgba(192,132,252,0.15)" },
+    { label: "Product & Strategy", darkColor: "rgba(52,211,153,0.15)" },
+    { label: "Sales & Support", darkColor: "rgba(251,191,36,0.15)" },
+    { label: "Game Development", darkColor: "rgba(248,113,113,0.15)" },
+    { label: "Academic & Specialized", darkColor: "rgba(148,163,184,0.15)" },
+  ];
 
   useEffect(() => {
     let cancelled = false;
@@ -46,7 +68,7 @@ function SkillsHome() {
         numItems: 12,
         sort: "downloads",
         dir: "desc",
-        nonSuspiciousOnly: true,
+        nonSuspiciousOnly: false,
       })
       .then((r) => {
         if (!cancelled) setPopular((r as { page: SkillPageEntry[] }).page);
@@ -62,16 +84,24 @@ function SkillsHome() {
       <section className="hero">
         <div className="hero-inner">
           <div className="hero-copy fade-up" data-delay="1">
-            <span className="hero-badge">Lobster-light. Agent-right.</span>
-            <h1 className="hero-title">ClawHub, the skill dock for sharp agents.</h1>
+            <span className="hero-badge" style={{ background: "rgba(99,102,241,0.15)", color: "#a5b4fc", border: "1px solid rgba(99,102,241,0.3)" }}>
+              {totalSkillsText ? `${totalSkillsText} AI Talent` : "AI Talent Network"}
+            </span>
+            <h1
+              className="hero-title"
+              style={{
+                background: "linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #a5b4fc 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              The AI Talent Network
+            </h1>
             <p className="hero-subtitle">
-              Upload AgentSkills bundles, version them like npm, and make them searchable with
-              vectors. No gatekeeping, just signal.
+              Browse, download, and deploy AI talent built on real expertise, real personality, and real-world experience — not generic AI.
             </p>
-            <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
-              <Link to="/upload" search={{ updateSlug: undefined }} className="btn btn-primary">
-                Publish a skill
-              </Link>
+            <div style={{ display: "flex", gap: 12, marginTop: 28 }}>
               <Link
                 to="/skills"
                 search={{
@@ -83,65 +113,36 @@ function SkillsHome() {
                   view: undefined,
                   focus: undefined,
                 }}
-                className="btn"
+                className="btn btn-primary"
+                style={{ background: "#6366f1", borderColor: "#6366f1", color: "#fff" }}
               >
-                Browse skills
+                Browse AI Talent
+              </Link>
+              <Link to="/upload" search={{ updateSlug: undefined }} className="btn" style={{ borderColor: "rgba(255,255,255,0.2)", color: "#f1f1f1" }}>
+                Share an AI Talent
               </Link>
             </div>
           </div>
-          <div className="hero-card hero-search-card fade-up" data-delay="2">
+          <div className="hero-card hero-search-card fade-up" data-delay="2" style={{ background: "#1a1a1a", border: "1px solid rgba(99,102,241,0.25)", boxShadow: "0 0 40px rgba(99,102,241,0.1)" }}>
             <div className="hero-install" style={{ marginTop: 18 }}>
-              <div className="stat">Search skills. Versioned, rollback-ready.</div>
-              <InstallSwitcher exampleSlug="sonoscli" />
+              <InstallSwitcher exampleSlug="elon-musk" />
             </div>
           </div>
         </div>
       </section>
 
       <section className="section">
-        <h2 className="section-title">Highlighted skills</h2>
-        <p className="section-subtitle">Curated signal — highlighted for quick trust.</p>
-        <div className="grid">
-          {highlighted.length === 0 ? (
-            <div className="card">No highlighted skills yet.</div>
-          ) : (
-            highlighted.map((entry) => (
-              <SkillCard
-                key={entry.skill._id}
-                skill={entry.skill}
-                badge={getSkillBadges(entry.skill)}
-                summaryFallback="A fresh skill bundle."
-                meta={
-                  <div className="skill-card-footer-rows">
-                    <UserBadge
-                      user={entry.owner}
-                      fallbackHandle={entry.ownerHandle ?? null}
-                      prefix="by"
-                      link={false}
-                    />
-                    <div className="stat">
-                      <SkillStatsTripletLine stats={entry.skill.stats} />
-                    </div>
-                  </div>
-                }
-              />
-            ))
-          )}
-        </div>
-      </section>
-
-      <section className="section">
-        <h2 className="section-title">Popular skills</h2>
+        <h2 className="section-title">Popular AI Talent</h2>
         <p className="section-subtitle">Most-downloaded, non-suspicious picks.</p>
         <div className="grid">
           {popular.length === 0 ? (
-            <div className="card">No skills yet. Be the first.</div>
+            <div className="card">No AI Talent yet. Be the first.</div>
           ) : (
             popular.map((entry) => (
               <SkillCard
                 key={entry.skill._id}
                 skill={entry.skill}
-                summaryFallback="Agent-ready skill pack."
+                summaryFallback="Agent-ready AI Talent pack."
                 meta={
                   <div className="skill-card-footer-rows">
                     <UserBadge
@@ -173,10 +174,68 @@ function SkillsHome() {
             }}
             className="btn"
           >
-            See all skills
+            See all AI Talent
           </Link>
         </div>
       </section>
+
+      {/* Persona differentiator blurb */}
+      <div style={{ textAlign: "center", margin: "32px auto 0", maxWidth: 600, padding: "0 24px" }}>
+        <p style={{ color: "#888", fontSize: "0.95rem", fontStyle: "italic", lineHeight: 1.7, margin: 0 }}>
+          Two legal advisors. One precise and methodical, one direct and street-smart.{" "}
+          You're not picking a tool — you're choosing who you want in your corner.{" "}
+          That's something no general AI can give you.
+        </p>
+      </div>
+
+      {/* Category filter pills */}
+      <div className="flex flex-wrap gap-2 my-6 px-4" style={{ justifyContent: "center" }}>
+        <Link
+          to="/skills"
+          search={{ q: undefined, sort: "downloads", dir: undefined, focus: undefined, category: undefined }}
+          style={{
+            padding: "6px 16px",
+            borderRadius: 9999,
+            fontSize: "0.875rem",
+            fontWeight: 500,
+            border: "1px solid rgba(255,255,255,0.1)",
+            cursor: "pointer",
+            transition: "all 0.2s",
+            background: "rgba(255,255,255,0.05)",
+            color: "#aaa",
+            textDecoration: "none",
+            display: "inline-block",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#6366f1"; (e.currentTarget as HTMLAnchorElement).style.color = "#fff"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "#6366f1"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#aaa"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.1)"; }}
+        >
+          All AI Talent
+        </Link>
+        {CATEGORIES.map(({ label, darkColor }) => (
+          <Link
+            key={label}
+            to="/skills"
+            search={{ q: undefined, sort: "downloads", dir: undefined, focus: undefined, category: label }}
+            style={{
+              padding: "6px 16px",
+              borderRadius: 9999,
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              border: "1px solid rgba(255,255,255,0.1)",
+              cursor: "pointer",
+              transition: "all 0.2s",
+              background: darkColor ?? "rgba(255,255,255,0.05)",
+              color: "#aaa",
+              textDecoration: "none",
+              display: "inline-block",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#6366f1"; (e.currentTarget as HTMLAnchorElement).style.color = "#fff"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "#6366f1"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = darkColor ?? "rgba(255,255,255,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#aaa"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.1)"; }}
+          >
+            {label}
+          </Link>
+        ))}
+      </div>
     </main>
   );
 }

@@ -1,9 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useAction, useQuery } from "convex/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "../../../convex/_generated/api";
 import { SoulCard } from "../../components/SoulCard";
-import { SoulMetricsRow, SoulStatsTripletLine } from "../../components/SoulStats";
+import { SoulStatsTripletLine } from "../../components/SoulStats";
 import type { PublicSoul } from "../../lib/publicUser";
 
 const sortKeys = ["newest", "downloads", "stars", "name", "updated"] as const;
@@ -27,7 +27,6 @@ export const Route = createFileRoute("/souls/")({
       q: typeof search.q === "string" && search.q.trim() ? search.q : undefined,
       sort: typeof search.sort === "string" ? parseSort(search.sort) : undefined,
       dir: search.dir === "asc" || search.dir === "desc" ? search.dir : undefined,
-      view: search.view === "cards" || search.view === "list" ? search.view : undefined,
       focus: search.focus === "search" ? "search" : undefined,
     };
   },
@@ -39,7 +38,6 @@ function SoulsIndex() {
   const search = Route.useSearch();
   const sort = search.sort ?? "newest";
   const dir = parseDir(search.dir, sort);
-  const view = search.view ?? "list";
   const [query, setQuery] = useState(search.q ?? "");
 
   const souls = useQuery(api.souls.list, { limit: 500 }) as PublicSoul[] | undefined;
@@ -174,21 +172,6 @@ function SoulsIndex() {
             >
               {dir === "asc" ? "↑" : "↓"}
             </button>
-            <button
-              className={`skills-view${view === "cards" ? " is-active" : ""}`}
-              type="button"
-              onClick={() => {
-                void navigate({
-                  search: (prev) => ({
-                    ...prev,
-                    view: prev.view === "cards" ? undefined : "cards",
-                  }),
-                  replace: true,
-                });
-              }}
-            >
-              {view === "cards" ? "List" : "Cards"}
-            </button>
           </div>
         </div>
       </header>
@@ -199,7 +182,7 @@ function SoulsIndex() {
         </div>
       ) : showing === 0 ? (
         <div className="card">No souls match that filter.</div>
-      ) : view === "cards" ? (
+      ) : (
         <div className="grid">
           {sorted.map((soul) => (
             <SoulCard
@@ -212,28 +195,6 @@ function SoulsIndex() {
                 </div>
               }
             />
-          ))}
-        </div>
-      ) : (
-        <div className="skills-list">
-          {sorted.map((soul) => (
-            <Link
-              key={soul._id}
-              className="skills-row"
-              to="/souls/$slug"
-              params={{ slug: soul.slug }}
-            >
-              <div className="skills-row-main">
-                <div className="skills-row-title">
-                  <span>{soul.displayName}</span>
-                  <span className="skills-row-slug">/{soul.slug}</span>
-                </div>
-                <div className="skills-row-summary">{soul.summary ?? "SOUL.md bundle."}</div>
-              </div>
-              <div className="skills-row-metrics">
-                <SoulMetricsRow stats={soul.stats} />
-              </div>
-            </Link>
           ))}
         </div>
       )}

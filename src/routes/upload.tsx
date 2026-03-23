@@ -83,6 +83,7 @@ export function Upload() {
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const zipInputRef = useRef<HTMLInputElement | null>(null);
   const setFileInputRef = (node: HTMLInputElement | null) => {
     fileInputRef.current = node;
     if (node) {
@@ -120,6 +121,10 @@ export function Upload() {
         const lower = path.trim().toLowerCase();
         return isSoulMode ? lower === "soul.md" : lower === "skill.md" || lower === "skills.md";
       }),
+    [isSoulMode, normalizedPaths],
+  );
+  const hasReadmeFile = useMemo(
+    () => !isSoulMode || normalizedPaths.some((path) => path.trim().toLowerCase() === "readme.md"),
     [isSoulMode, normalizedPaths],
   );
   const sizeLabel = totalBytes ? formatBytes(totalBytes) : "0 B";
@@ -257,6 +262,9 @@ export function Upload() {
     if (!hasRequiredFile) {
       issues.push(`${requiredFileLabel} is required.`);
     }
+    if (!hasReadmeFile) {
+      issues.push("README.md is required.");
+    }
     const invalidFiles = files.filter((file) => !isTextFile(file));
     if (invalidFiles.length > 0) {
       issues.push(
@@ -284,6 +292,7 @@ export function Upload() {
     acceptedLicenseTerms,
     files,
     hasRequiredFile,
+    hasReadmeFile,
     isSoulMode,
     totalBytes,
     requiredFileLabel,
@@ -393,9 +402,10 @@ export function Upload() {
     <main className="section upload-page">
       <header className="upload-page-header">
         <div>
-          <h1 className="upload-page-title">Publish a {contentLabel}</h1>
+          <h1 className="upload-page-title">Share Your AI Talent</h1>
           <p className="upload-page-subtitle">
-            Drop a folder with {requiredFileLabel} and text files. We will handle the rest.
+            Upload your AI Talent package (.zip or folder) to share your expertise with the community.
+            Your package should include a <code>SOUL.md</code> (personality &amp; identity) and a <code>README.md</code> (usage guide).
           </p>
         </div>
       </header>
@@ -479,23 +489,46 @@ export function Upload() {
                 void applyExpandedFiles(picked);
               }}
             />
+            <input
+              ref={zipInputRef}
+              className="upload-file-input"
+              id="upload-zip"
+              data-testid="upload-zip-input"
+              type="file"
+              accept=".zip"
+              onChange={(event) => {
+                const picked = Array.from(event.target.files ?? []);
+                void applyExpandedFiles(picked);
+                // Reset so same ZIP can be re-selected
+                if (zipInputRef.current) zipInputRef.current.value = "";
+              }}
+            />
             <div className="upload-dropzone-copy">
               <div className="upload-dropzone-title-row">
-                <strong>Drop a folder</strong>
+                <strong>Drop a .zip or folder</strong>
                 <span className="upload-dropzone-count">
                   {files.length} files · {sizeLabel}
                 </span>
               </div>
               <span className="upload-dropzone-hint">
-                We keep folder paths and flatten the outer wrapper automatically.
+                ZIP must include <code>SOUL.md</code> and <code>README.md</code>. We strip the outer wrapper automatically.
               </span>
-              <button
-                className="btn upload-picker-btn"
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                Choose folder
-              </button>
+              <div className="upload-picker-row">
+                <button
+                  className="btn upload-picker-btn"
+                  type="button"
+                  onClick={() => zipInputRef.current?.click()}
+                >
+                  Choose .zip
+                </button>
+                <button
+                  className="btn upload-picker-btn"
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  Choose folder
+                </button>
+              </div>
             </div>
           </label>
 

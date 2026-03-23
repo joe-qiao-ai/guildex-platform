@@ -12,24 +12,24 @@ const PACKAGE_MANAGERS: Array<{ id: PackageManager; label: string }> = [
   { id: "bun", label: "bun" },
 ];
 
-export function InstallSwitcher({ exampleSlug = "sonoscli" }: InstallSwitcherProps) {
+export function InstallSwitcher({ exampleSlug = "elon-musk" }: InstallSwitcherProps) {
   const [pm, setPm] = useState<PackageManager>("npm");
 
   const command = useMemo(() => {
     switch (pm) {
       case "npm":
-        return `npx clawhub@latest install ${exampleSlug}`;
+        return `npx guildex install ${exampleSlug}`;
       case "pnpm":
-        return `pnpm dlx clawhub@latest install ${exampleSlug}`;
+        return `pnpm dlx guildex install ${exampleSlug}`;
       case "bun":
-        return `bunx clawhub@latest install ${exampleSlug}`;
+        return `bunx guildex install ${exampleSlug}`;
     }
   }, [exampleSlug, pm]);
 
   return (
     <div className="install-switcher">
       <div className="install-switcher-row">
-        <div className="stat">Install any skill folder in one shot:</div>
+        <div className="stat">Install any AI talent in one shot:</div>
         <div className="install-switcher-toggle" role="tablist" aria-label="Install command">
           {PACKAGE_MANAGERS.map((entry) => (
             <button

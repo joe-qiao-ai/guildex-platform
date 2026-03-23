@@ -86,13 +86,13 @@ export function getSiteMode(): SiteMode {
 }
 
 export function getSiteName(mode: SiteMode = getSiteMode()) {
-  return mode === "souls" ? "SoulHub" : "ClawHub";
+  return mode === "souls" ? "Guildex" : "Guildex";
 }
 
 export function getSiteDescription(mode: SiteMode = getSiteMode()) {
   return mode === "souls"
-    ? "SoulHub — the home for SOUL.md bundles and personal system lore."
-    : "ClawHub — a fast skill registry for agents, with vector search.";
+    ? "Guildex · The AI Talent Network — share and discover AI Talent with real expertise."
+    : "Guildex · The AI Talent Network — find the AI Talent you need. Get their real expertise and judgment.";
 }
 
 export function getSiteUrlForMode(mode: SiteMode = getSiteMode()) {

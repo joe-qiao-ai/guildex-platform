@@ -480,6 +480,13 @@ export const insertVersion = internalMutation({
       frontmatter: v.record(v.string(), v.any()),
       metadata: v.optional(v.any()),
     }),
+    // Metadata from README.md frontmatter
+    bio: v.optional(v.string()),
+    tagline: v.optional(v.string()),
+    personality: v.optional(v.string()),
+    coreSkills: v.optional(v.array(v.string())),
+    skillTags: v.optional(v.array(v.string())),
+    categories: v.optional(v.array(v.string())),
     embedding: v.array(v.number()),
   },
   handler: async (ctx, args) => {
@@ -509,6 +516,13 @@ export const insertVersion = internalMutation({
         latestVersionId: undefined,
         tags: {},
         softDeletedAt: undefined,
+        securityScan: "pending",
+        bio: args.bio,
+        tagline: args.tagline,
+        personality: args.personality,
+        coreSkills: args.coreSkills,
+        skillTags: args.skillTags,
+        categories: args.categories,
         stats: {
           downloads: 0,
           stars: 0,
@@ -560,6 +574,13 @@ export const insertVersion = internalMutation({
       tags: nextTags,
       stats: { ...soul.stats, versions: soul.stats.versions + 1 },
       softDeletedAt: undefined,
+      securityScan: "pending",
+      ...(args.bio !== undefined ? { bio: args.bio } : {}),
+      ...(args.tagline !== undefined ? { tagline: args.tagline } : {}),
+      ...(args.personality !== undefined ? { personality: args.personality } : {}),
+      ...(args.coreSkills !== undefined ? { coreSkills: args.coreSkills } : {}),
+      ...(args.skillTags !== undefined ? { skillTags: args.skillTags } : {}),
+      ...(args.categories !== undefined ? { categories: args.categories } : {}),
       updatedAt: now,
     });
 
@@ -660,3 +681,19 @@ function clampInt(value: number, min: number, max: number) {
   const rounded = Number.isFinite(value) ? Math.round(value) : min;
   return Math.min(max, Math.max(min, rounded));
 }
+
+export const updateSecurityScan = internalMutation({
+  args: {
+    soulId: v.id("souls"),
+    securityScan: v.union(
+      v.literal("pending"),
+      v.literal("safe"),
+      v.literal("warning"),
+      v.literal("rejected"),
+    ),
+    securityScanReason: v.optional(v.string()),
+  },
+  handler: async (ctx, { soulId, securityScan, securityScanReason }) => {
+    await ctx.db.patch(soulId, { securityScan, securityScanReason });
+  },
+});

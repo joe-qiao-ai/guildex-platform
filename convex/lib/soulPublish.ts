@@ -114,23 +114,40 @@ export async function publishSoulVersionForUser(
   }
 
   const isSoulFile = (path: string) => path.toLowerCase() === "soul.md";
-  const readmeFile = publishFiles.find((file) => isSoulFile(file.path));
-  if (!readmeFile) throw new ConvexError("SOUL.md is required");
+  const isReadmeFile = (path: string) => path.toLowerCase() === "readme.md";
+  const soulFile = publishFiles.find((file) => isSoulFile(file.path));
+  if (!soulFile) throw new ConvexError("SOUL.md is required");
 
+  // Allow README.md and other text files alongside SOUL.md
+  const readmeFile = publishFiles.find((file) => isReadmeFile(file.path));
   const nonSoulFiles = publishFiles.filter((file) => !isSoulFile(file.path));
-  if (nonSoulFiles.length > 0) {
-    throw new ConvexError("Only SOUL.md is allowed for soul bundles");
-  }
 
-  const readmeText = await fetchText(ctx, readmeFile.storageId);
-  const frontmatter = parseFrontmatter(readmeText);
-  const summary = getFrontmatterValue(frontmatter, "description") ?? deriveSoulSummary(readmeText);
+  const readmeText = await fetchText(ctx, soulFile.storageId);
+  const readmeMdText = readmeFile ? await fetchText(ctx, readmeFile.storageId) : null;
+
+  // Extract metadata: prefer README.md frontmatter, fall back to SOUL.md
+  const frontmatter = parseFrontmatter(readmeMdText ?? readmeText);
+  const soulFrontmatter = parseFrontmatter(readmeText);
+  const summary =
+    getFrontmatterValue(frontmatter, "tagline") ??
+    getFrontmatterValue(frontmatter, "description") ??
+    (readmeMdText ? deriveSoulSummary(readmeMdText) : deriveSoulSummary(readmeText));
   const metadata = mergeSourceIntoMetadata(getFrontmatterMetadata(frontmatter), args.source);
 
+  const otherFileTexts: Array<{ path: string; content: string }> = [];
+  for (const file of nonSoulFiles.slice(0, 5)) {
+    try {
+      const content = await fetchText(ctx, file.storageId);
+      otherFileTexts.push({ path: file.path, content });
+    } catch {
+      // ignore read errors for extra files
+    }
+  }
+
   const embeddingText = buildEmbeddingText({
-    frontmatter,
-    readme: readmeText,
-    otherFiles: [],
+    frontmatter: { ...soulFrontmatter, ...frontmatter },
+    readme: readmeMdText ?? readmeText,
+    otherFiles: otherFileTexts,
   });
 
   const fingerprint = await hashSkillFiles(
@@ -146,7 +163,7 @@ export async function publishSoulVersionForUser(
       : generateSoulChangelogForPublish(ctx, {
           slug,
           version,
-          readmeText,
+          readmeText: readmeMdText ?? readmeText,
           files: publishFiles.map((file) => ({ path: file.path, sha256: file.sha256 })),
         });
 
@@ -159,6 +176,14 @@ export async function publishSoulVersionForUser(
     }),
   ]);
 
+  // Extract metadata fields from README.md frontmatter
+  const bioVal = getFrontmatterValue(frontmatter, "bio");
+  const taglineVal = getFrontmatterValue(frontmatter, "tagline") ?? getFrontmatterValue(frontmatter, "description");
+  const personalityVal = getFrontmatterValue(soulFrontmatter, "personality") ?? getFrontmatterValue(soulFrontmatter, "description");
+  const coreSkillsVal = getFrontmatterValue(frontmatter, "coreSkills");
+  const skillTagsVal = getFrontmatterValue(frontmatter, "skillTags") ?? getFrontmatterValue(frontmatter, "tags");
+  const categoriesVal = getFrontmatterValue(frontmatter, "categories");
+
   const publishResult = (await ctx.runMutation(internal.souls.insertVersion, {
     userId,
     slug,
@@ -170,10 +195,16 @@ export async function publishSoulVersionForUser(
     fingerprint,
     files: publishFiles,
     parsed: {
-      frontmatter,
+      frontmatter: { ...soulFrontmatter, ...frontmatter },
       metadata,
     },
     summary,
+    bio: typeof bioVal === "string" ? bioVal : undefined,
+    tagline: typeof taglineVal === "string" ? taglineVal : undefined,
+    personality: typeof personalityVal === "string" ? personalityVal : undefined,
+    coreSkills: Array.isArray(coreSkillsVal) ? coreSkillsVal.map(String) : undefined,
+    skillTags: Array.isArray(skillTagsVal) ? skillTagsVal.map(String) : undefined,
+    categories: Array.isArray(categoriesVal) ? categoriesVal.map(String) : undefined,
     embedding,
   })) as PublishResult;
 
@@ -193,6 +224,16 @@ export async function publishSoulVersionForUser(
     })
     .catch((error) => {
       console.error("GitHub soul backup scheduling failed", error);
+    });
+
+  // Trigger security scan asynchronously
+  void ctx.scheduler
+    .runAfter(0, internal.securityScan.runSoulSecurityScan, {
+      soulId: publishResult.soulId,
+      soulMdContent: readmeText,
+    })
+    .catch((error) => {
+      console.error("Security scan scheduling failed", error);
     });
 
   return publishResult;

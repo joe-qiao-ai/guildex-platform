@@ -175,6 +175,10 @@ export const searchSkills: ReturnType<typeof action> = action({
           entry.skill.displayName,
           entry.skill.slug,
           entry.skill.summary,
+          entry.skill.title ?? null,
+          entry.skill.bio ?? null,
+          ...(entry.skill.categories ?? []),
+          ...(entry.skill.coreSkills ?? []),
         ]),
       );
 
@@ -325,7 +329,15 @@ export const lexicalFallbackSkills = internalQuery({
     }
 
     const matched = candidates.filter((skill) =>
-      matchesExactTokens(args.queryTokens, [skill.displayName, skill.slug, skill.summary]),
+      matchesExactTokens(args.queryTokens, [
+        skill.displayName,
+        skill.slug,
+        skill.summary,
+        skill.title ?? null,
+        skill.bio ?? null,
+        ...(skill.categories ?? []),
+        ...(skill.coreSkills ?? []),
+      ]),
     );
     if (matched.length === 0) return [];
 

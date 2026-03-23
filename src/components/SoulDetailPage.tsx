@@ -143,6 +143,13 @@ export function SoulDetailPage({ slug }: SoulDetailPageProps) {
               <div className="stat">
                 <SoulStatsTripletLine stats={soul.stats} versionSuffix="versions" />
               </div>
+              {soul.securityScan === "safe" ? (
+                <span className="security-badge security-badge--safe">✓ Verified Safe</span>
+              ) : soul.securityScan === "pending" || !soul.securityScan ? (
+                <span className="security-badge security-badge--pending">⏳ Under Review</span>
+              ) : soul.securityScan === "rejected" ? (
+                <span className="security-badge security-badge--rejected">✗ Rejected</span>
+              ) : null}
               {ownerHandle ? (
                 <div className="stat">
                   by <a href={`/u/${ownerHandle}`}>@{ownerHandle}</a>

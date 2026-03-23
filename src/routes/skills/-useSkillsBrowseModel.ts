@@ -7,16 +7,12 @@ import type { SkillListEntry, SkillSearchEntry } from "./-types";
 
 const pageSize = 25;
 
-type SkillsView = "cards" | "list";
-
 export type SkillsSearchState = {
   q?: string;
   sort?: SortKey;
   dir?: SortDir;
-  highlighted?: boolean;
-  nonSuspicious?: boolean;
-  view?: SkillsView;
   focus?: "search";
+  category?: string;
 };
 
 type SkillsNavigate = (options: {
@@ -44,9 +40,7 @@ export function useSkillsBrowseModel({
   const loadMoreInFlightRef = useRef(false);
   const navigateTimer = useRef<number>(0);
 
-  const view: SkillsView = search.view ?? "list";
-  const highlightedOnly = search.highlighted ?? false;
-  const nonSuspiciousOnly = search.nonSuspicious ?? false;
+  const activeCategory = search.category ?? "all";
   const searchSkills = useAction(api.search.searchSkills);
 
   const trimmedQuery = useMemo(() => query.trim(), [query]);
@@ -57,9 +51,7 @@ export function useSkillsBrowseModel({
       : (search.sort ?? (hasQuery ? "relevance" : "downloads"));
   const listSort = toListSort(sort);
   const dir = parseDir(search.dir, sort);
-  const searchKey = trimmedQuery
-    ? `${trimmedQuery}::${highlightedOnly ? "1" : "0"}::${nonSuspiciousOnly ? "1" : "0"}`
-    : "";
+  const searchKey = trimmedQuery ? trimmedQuery : "";
 
   // One-shot paginated fetches (no reactive subscription)
   const [listResults, setListResults] = useState<SkillListEntry[]>([]);
@@ -75,8 +67,8 @@ export function useSkillsBrowseModel({
           numItems: pageSize,
           sort: listSort,
           dir,
-          highlightedOnly,
-          nonSuspiciousOnly,
+          highlightedOnly: false,
+          nonSuspiciousOnly: false,
         });
         if (generation !== fetchGeneration.current) return;
         setListResults((prev) => (cursor ? [...prev, ...result.page] : result.page));
@@ -86,11 +78,10 @@ export function useSkillsBrowseModel({
       } catch (err) {
         if (generation !== fetchGeneration.current) return;
         console.error("Failed to fetch skills page:", err);
-        // Reset to idle so the user can retry via "Load more"
         setListStatus(cursor ? "idle" : "done");
       }
     },
-    [listSort, dir, highlightedOnly, nonSuspiciousOnly],
+    [listSort, dir],
   );
 
   // Reset and fetch first page when sort/dir/filters change
@@ -140,8 +131,8 @@ export function useSkillsBrowseModel({
         try {
           const data = (await searchSkills({
             query: trimmedQuery,
-            highlightedOnly,
-            nonSuspiciousOnly,
+            highlightedOnly: false,
+            nonSuspiciousOnly: false,
             limit: searchLimit,
           })) as Array<SkillSearchEntry>;
           if (requestId === searchRequest.current) {
@@ -155,7 +146,7 @@ export function useSkillsBrowseModel({
       })();
     }, 220);
     return () => window.clearTimeout(handle);
-  }, [hasQuery, highlightedOnly, nonSuspiciousOnly, searchLimit, searchSkills, trimmedQuery]);
+  }, [hasQuery, searchLimit, searchSkills, trimmedQuery]);
 
   const baseItems = useMemo(() => {
     if (hasQuery) {
@@ -170,33 +161,37 @@ export function useSkillsBrowseModel({
     return listResults;
   }, [hasQuery, listResults, searchResults]);
 
+  // Client-side sort: always sort results (both search and list modes)
   const sorted = useMemo(() => {
-    if (!hasQuery) {
-      return baseItems;
-    }
     const multiplier = dir === "asc" ? 1 : -1;
     const results = [...baseItems];
     results.sort((a, b) => {
       const tieBreak = () => {
-        const updated = (a.skill.updatedAt - b.skill.updatedAt) * multiplier;
+        const updated = ((a.skill.updatedAt ?? 0) - (b.skill.updatedAt ?? 0)) * multiplier;
         if (updated !== 0) return updated;
-        return a.skill.slug.localeCompare(b.skill.slug);
+        return (a.skill.slug ?? "").localeCompare(b.skill.slug ?? "");
       };
       switch (sort) {
         case "relevance":
           return ((a.searchScore ?? 0) - (b.searchScore ?? 0)) * multiplier;
-        case "downloads":
-          return (a.skill.stats.downloads - b.skill.stats.downloads) * multiplier || tieBreak();
-        case "installs":
+        case "rating":
           return (
-            ((a.skill.stats.installsAllTime ?? 0) - (b.skill.stats.installsAllTime ?? 0)) *
+            ((a.skill.rating ?? 0) - (b.skill.rating ?? 0)) * multiplier || tieBreak()
+          );
+        case "downloads":
+          return (
+            ((a.skill.statsDownloads ?? a.skill.stats?.downloads ?? 0) -
+              (b.skill.statsDownloads ?? b.skill.stats?.downloads ?? 0)) *
               multiplier || tieBreak()
           );
-        case "stars":
-          return (a.skill.stats.stars - b.skill.stats.stars) * multiplier || tieBreak();
-        case "updated":
+        case "trending":
           return (
-            (a.skill.updatedAt - b.skill.updatedAt) * multiplier ||
+            ((a.skill.trendingScore ?? 0) - (b.skill.trendingScore ?? 0)) * multiplier ||
+            tieBreak()
+          );
+        case "newest":
+          return (
+            ((a.skill.createdAt ?? a.skill._creationTime ?? 0) - (b.skill.createdAt ?? b.skill._creationTime ?? 0)) * multiplier ||
             a.skill.slug.localeCompare(b.skill.slug)
           );
         case "name":
@@ -212,7 +207,18 @@ export function useSkillsBrowseModel({
       }
     });
     return results;
-  }, [baseItems, dir, hasQuery, sort]);
+  }, [baseItems, dir, sort]);
+
+  // Category filter applied after sort
+  const filteredSorted = useMemo(() => {
+    if (!activeCategory || activeCategory === "all") return sorted;
+    return sorted.filter((item) => {
+      const skill = item.skill as { category?: string; categories?: string[] };
+      if (skill.categories && skill.categories.includes(activeCategory)) return true;
+      if (skill.category === activeCategory) return true;
+      return false;
+    });
+  }, [sorted, activeCategory]);
 
   const isLoadingSkills = hasQuery ? isSearching && searchResults.length === 0 : isLoadingList;
   const canLoadMore = hasQuery
@@ -289,26 +295,6 @@ export function useSkillsBrowseModel({
     [navigate],
   );
 
-  const onToggleHighlighted = useCallback(() => {
-    void navigate({
-      search: (prev) => ({
-        ...prev,
-        highlighted: prev.highlighted ? undefined : true,
-      }),
-      replace: true,
-    });
-  }, [navigate]);
-
-  const onToggleNonSuspicious = useCallback(() => {
-    void navigate({
-      search: (prev) => ({
-        ...prev,
-        nonSuspicious: prev.nonSuspicious ? undefined : true,
-      }),
-      replace: true,
-    });
-  }, [navigate]);
-
   const onSortChange = useCallback(
     (value: string) => {
       const nextSort = parseSort(value);
@@ -334,41 +320,36 @@ export function useSkillsBrowseModel({
     });
   }, [navigate, sort]);
 
-  const onToggleView = useCallback(() => {
-    void navigate({
-      search: (prev) => ({
-        ...prev,
-        view: prev.view === "cards" ? undefined : "cards",
-      }),
-      replace: true,
-    });
-  }, [navigate]);
-
-  const activeFilters: string[] = [];
-  if (highlightedOnly) activeFilters.push("highlighted");
-  if (nonSuspiciousOnly) activeFilters.push("non-suspicious");
+  const onCategoryChange = useCallback(
+    (category: string) => {
+      void navigate({
+        search: (prev) => ({
+          ...prev,
+          category: category === "all" ? undefined : category,
+        }),
+        replace: true,
+      });
+    },
+    [navigate],
+  );
 
   return {
-    activeFilters,
+    activeCategory,
     canAutoLoad,
     canLoadMore,
     dir,
+    filteredSorted,
     hasQuery,
-    highlightedOnly,
     isLoadingMore,
     isLoadingSkills,
     loadMore,
     loadMoreRef,
-    nonSuspiciousOnly,
+    onCategoryChange,
     onQueryChange,
     onSortChange,
     onToggleDir,
-    onToggleHighlighted,
-    onToggleNonSuspicious,
-    onToggleView,
     query,
     sort,
-    sorted,
-    view,
+    sorted: filteredSorted,
   };
 }

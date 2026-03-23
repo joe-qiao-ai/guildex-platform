@@ -1,6 +1,7 @@
 import { ApiRoutes, LegacyApiRoutes } from "clawhub-schema";
 import { httpRouter } from "convex/server";
 import { auth } from "./auth";
+import { downloadPersonaHandler } from "./downloadApi";
 import { downloadZip } from "./downloads";
 import {
   cliPublishHttp,
@@ -38,6 +39,13 @@ import { preflightHandler } from "./httpPreflight";
 const http = httpRouter();
 
 auth.addHttpRoutes(http);
+
+// Guildex persona download API
+http.route({
+  path: "/api/download",
+  method: "POST",
+  handler: downloadPersonaHandler,
+});
 
 http.route({
   path: ApiRoutes.download,

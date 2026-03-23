@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as admin from "../admin.js";
 import type * as appMeta from "../appMeta.js";
 import type * as auth from "../auth.js";
 import type * as commentModeration from "../commentModeration.js";
@@ -15,8 +16,10 @@ import type * as comments from "../comments.js";
 import type * as crons from "../crons.js";
 import type * as devSeed from "../devSeed.js";
 import type * as devSeedExtra from "../devSeedExtra.js";
+import type * as downloadApi from "../downloadApi.js";
 import type * as downloads from "../downloads.js";
 import type * as functions from "../functions.js";
+import type * as github from "../github.js";
 import type * as githubBackups from "../githubBackups.js";
 import type * as githubBackupsNode from "../githubBackupsNode.js";
 import type * as githubIdentity from "../githubIdentity.js";
@@ -86,7 +89,9 @@ import type * as llmEval from "../llmEval.js";
 import type * as maintenance from "../maintenance.js";
 import type * as rateLimits from "../rateLimits.js";
 import type * as search from "../search.js";
+import type * as securityScan from "../securityScan.js";
 import type * as seed from "../seed.js";
+import type * as seedPersonas from "../seedPersonas.js";
 import type * as seedSouls from "../seedSouls.js";
 import type * as skillStatEvents from "../skillStatEvents.js";
 import type * as skillTransfers from "../skillTransfers.js";
@@ -111,6 +116,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  admin: typeof admin;
   appMeta: typeof appMeta;
   auth: typeof auth;
   commentModeration: typeof commentModeration;
@@ -118,8 +124,10 @@ declare const fullApi: ApiFromModules<{
   crons: typeof crons;
   devSeed: typeof devSeed;
   devSeedExtra: typeof devSeedExtra;
+  downloadApi: typeof downloadApi;
   downloads: typeof downloads;
   functions: typeof functions;
+  github: typeof github;
   githubBackups: typeof githubBackups;
   githubBackupsNode: typeof githubBackupsNode;
   githubIdentity: typeof githubIdentity;
@@ -189,7 +197,9 @@ declare const fullApi: ApiFromModules<{
   maintenance: typeof maintenance;
   rateLimits: typeof rateLimits;
   search: typeof search;
+  securityScan: typeof securityScan;
   seed: typeof seed;
+  seedPersonas: typeof seedPersonas;
   seedSouls: typeof seedSouls;
   skillStatEvents: typeof skillStatEvents;
   skillTransfers: typeof skillTransfers;

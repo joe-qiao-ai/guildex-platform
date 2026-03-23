@@ -335,6 +335,27 @@ export async function publishVersionForUser(
     });
   }
 
+  // Push persona to guildex-ai-talent public repo if SOUL.md is present.
+  // This makes every approved persona automatically available on GitHub.
+  const soulFile = fileContents.find((f) => f.path.toLowerCase() === "soul.md");
+  if (soulFile) {
+    const getFile = (name: string) =>
+      fileContents.find((f) => f.path.toLowerCase() === name.toLowerCase())?.content ?? "";
+    void ctx.scheduler
+      .runAfter(0, internal.github.pushPersonaToGitHub, {
+        slug,
+        displayName,
+        soul: soulFile.content,
+        readme: getFile("README.md"),
+        skills: getFile("SKILLS.md"),
+        examples: getFile("EXAMPLES.md"),
+        tests: getFile("TESTS.md"),
+      })
+      .catch((error) => {
+        console.error("Persona GitHub push scheduling failed", error);
+      });
+  }
+
   return publishResult;
 }
 

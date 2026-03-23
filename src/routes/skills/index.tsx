@@ -13,18 +13,8 @@ export const Route = createFileRoute("/skills/")({
       q: typeof search.q === "string" && search.q.trim() ? search.q : undefined,
       sort: typeof search.sort === "string" ? parseSort(search.sort) : undefined,
       dir: search.dir === "asc" || search.dir === "desc" ? search.dir : undefined,
-      highlighted:
-        search.highlighted === "1" || search.highlighted === "true" || search.highlighted === true
-          ? true
-          : undefined,
-      nonSuspicious:
-        search.nonSuspicious === "1" ||
-        search.nonSuspicious === "true" ||
-        search.nonSuspicious === true
-          ? true
-          : undefined,
-      view: search.view === "cards" || search.view === "list" ? search.view : undefined,
       focus: search.focus === "search" ? "search" : undefined,
+      category: typeof search.category === "string" ? search.category : undefined,
     };
   },
   beforeLoad: ({ search }) => {
@@ -36,10 +26,8 @@ export const Route = createFileRoute("/skills/")({
         q: search.q || undefined,
         sort: "downloads",
         dir: search.dir || undefined,
-        highlighted: search.highlighted || undefined,
-        nonSuspicious: search.nonSuspicious || undefined,
-        view: search.view || undefined,
         focus: search.focus || undefined,
+        category: search.category || undefined,
       },
       replace: true,
     });
@@ -65,13 +53,13 @@ export function SkillsIndex() {
     <main className="section">
       <header className="skills-header-top">
         <h1 className="section-title" style={{ marginBottom: 8 }}>
-          Skills
+          AI Talent
           {totalSkillsText && <span style={{ opacity: 0.55 }}>{` (${totalSkillsText})`}</span>}
         </h1>
         <p className="section-subtitle" style={{ marginBottom: 0 }}>
           {model.isLoadingSkills
-            ? "Loading skills…"
-            : `Browse the skill library${model.activeFilters.length ? ` (${model.activeFilters.join(", ")})` : ""}.`}
+            ? "Loading AI Talent…"
+            : `Browse the AI Talent library.`}
         </p>
       </header>
       <div className="skills-container">
@@ -80,21 +68,14 @@ export function SkillsIndex() {
           query={model.query}
           hasQuery={model.hasQuery}
           sort={model.sort}
-          dir={model.dir}
-          view={model.view}
-          highlightedOnly={model.highlightedOnly}
-          nonSuspiciousOnly={model.nonSuspiciousOnly}
+          activeCategory={model.activeCategory}
           onQueryChange={model.onQueryChange}
-          onToggleHighlighted={model.onToggleHighlighted}
-          onToggleNonSuspicious={model.onToggleNonSuspicious}
           onSortChange={model.onSortChange}
-          onToggleDir={model.onToggleDir}
-          onToggleView={model.onToggleView}
+          onCategoryChange={model.onCategoryChange}
         />
         <SkillsResults
           isLoadingSkills={model.isLoadingSkills}
           sorted={model.sorted}
-          view={model.view}
           listDoneLoading={!model.isLoadingSkills && !model.canLoadMore && !model.isLoadingMore}
           hasQuery={model.hasQuery}
           canLoadMore={model.canLoadMore}

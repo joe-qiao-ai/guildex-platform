@@ -1,11 +1,11 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { Link } from "@tanstack/react-router";
 import { Menu, Monitor, Moon, Sun } from "lucide-react";
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import { getUserFacingConvexError } from "../lib/convexError";
 import { gravatarUrl } from "../lib/gravatar";
 import { isModerator } from "../lib/roles";
-import { getClawHubSiteUrl, getSiteMode, getSiteName } from "../lib/site";
+import { getSiteMode } from "../lib/site";
 import { applyTheme, useThemeMode } from "../lib/theme";
 import { startThemeTransition } from "../lib/theme-transition";
 import { setAuthError, useAuthError } from "../lib/useAuthError";
@@ -25,9 +25,7 @@ export default function Header() {
   const { mode, setMode } = useThemeMode();
   const toggleRef = useRef<HTMLDivElement | null>(null);
   const siteMode = getSiteMode();
-  const siteName = useMemo(() => getSiteName(siteMode), [siteMode]);
-  const isSoulMode = siteMode === "souls";
-  const clawHubUrl = getClawHubSiteUrl();
+  void siteMode; // Guild is always skills mode visually
 
   const avatar = me?.image ?? (me?.email ? gravatarUrl(me.email) : undefined);
   const handle = me?.handle ?? me?.displayName ?? "user";
@@ -57,69 +55,36 @@ export default function Header() {
           search={{ q: undefined, highlighted: undefined, search: undefined }}
           className="brand"
         >
-          <span className="brand-mark">
-            <img src="/clawd-logo.png" alt="" aria-hidden="true" />
+          <span className="brand-mark" aria-hidden="true" />
+          <span
+            className="brand-name"
+            style={{
+              background: "linear-gradient(90deg, #ffffff 0%, #a5b4fc 60%, #818cf8 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            Guildex
           </span>
-          <span className="brand-name">{siteName}</span>
         </Link>
         <nav className="nav-links">
-          {isSoulMode ? <a href={clawHubUrl}>ClawHub</a> : null}
-          {isSoulMode ? (
-            <Link
-              to="/souls"
-              search={{
-                q: undefined,
-                sort: undefined,
-                dir: undefined,
-                view: undefined,
-                focus: undefined,
-              }}
-            >
-              Souls
-            </Link>
-          ) : (
-            <Link
-              to="/skills"
-              search={{
-                q: undefined,
-                sort: undefined,
-                dir: undefined,
-                highlighted: undefined,
-                nonSuspicious: undefined,
-                view: undefined,
-                focus: undefined,
-              }}
-            >
-              Skills
-            </Link>
-          )}
+          <Link
+            to="/skills"
+            search={{
+              q: undefined,
+              sort: undefined,
+              dir: undefined,
+              highlighted: undefined,
+              nonSuspicious: undefined,
+              view: undefined,
+              focus: undefined,
+            }}
+          >
+            AI Talent
+          </Link>
           <Link to="/upload" search={{ updateSlug: undefined }}>
             Upload
-          </Link>
-          {isSoulMode ? null : <Link to="/import">Import</Link>}
-          <Link
-            to={isSoulMode ? "/souls" : "/skills"}
-            search={
-              isSoulMode
-                ? {
-                    q: undefined,
-                    sort: undefined,
-                    dir: undefined,
-                    view: undefined,
-                    focus: "search",
-                  }
-                : {
-                    q: undefined,
-                    sort: undefined,
-                    dir: undefined,
-                    highlighted: undefined,
-                    nonSuspicious: undefined,
-                    view: undefined,
-                    focus: "search",
-                  }
-            }
-          >
-            Search
           </Link>
           {me ? <Link to="/stars">Stars</Link> : null}
           {isStaff ? (
@@ -137,76 +102,25 @@ export default function Header() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                {isSoulMode ? (
-                  <DropdownMenuItem asChild>
-                    <a href={clawHubUrl}>ClawHub</a>
-                  </DropdownMenuItem>
-                ) : null}
                 <DropdownMenuItem asChild>
-                  {isSoulMode ? (
-                    <Link
-                      to="/souls"
-                      search={{
-                        q: undefined,
-                        sort: undefined,
-                        dir: undefined,
-                        view: undefined,
-                        focus: undefined,
-                      }}
-                    >
-                      Souls
-                    </Link>
-                  ) : (
-                    <Link
-                      to="/skills"
-                      search={{
-                        q: undefined,
-                        sort: undefined,
-                        dir: undefined,
-                        highlighted: undefined,
-                        nonSuspicious: undefined,
-                        view: undefined,
-                        focus: undefined,
-                      }}
-                    >
-                      Skills
-                    </Link>
-                  )}
+                  <Link
+                    to="/skills"
+                    search={{
+                      q: undefined,
+                      sort: undefined,
+                      dir: undefined,
+                      highlighted: undefined,
+                      nonSuspicious: undefined,
+                      view: undefined,
+                      focus: undefined,
+                    }}
+                  >
+                    AI Talent
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/upload" search={{ updateSlug: undefined }}>
                     Upload
-                  </Link>
-                </DropdownMenuItem>
-                {isSoulMode ? null : (
-                  <DropdownMenuItem asChild>
-                    <Link to="/import">Import</Link>
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuItem asChild>
-                  <Link
-                    to={isSoulMode ? "/souls" : "/skills"}
-                    search={
-                      isSoulMode
-                        ? {
-                            q: undefined,
-                            sort: undefined,
-                            dir: undefined,
-                            view: undefined,
-                            focus: "search",
-                          }
-                        : {
-                            q: undefined,
-                            sort: undefined,
-                            dir: undefined,
-                            highlighted: undefined,
-                            nonSuspicious: undefined,
-                            view: undefined,
-                            focus: "search",
-                          }
-                    }
-                  >
-                    Search
                   </Link>
                 </DropdownMenuItem>
                 {me ? (
@@ -236,30 +150,6 @@ export default function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
-          <div className="theme-toggle" ref={toggleRef}>
-            <ToggleGroup
-              type="single"
-              value={mode}
-              onValueChange={(value) => {
-                if (!value) return;
-                setTheme(value as "system" | "light" | "dark");
-              }}
-              aria-label="Theme mode"
-            >
-              <ToggleGroupItem value="system" aria-label="System theme">
-                <Monitor className="h-4 w-4" aria-hidden="true" />
-                <span className="sr-only">System</span>
-              </ToggleGroupItem>
-              <ToggleGroupItem value="light" aria-label="Light theme">
-                <Sun className="h-4 w-4" aria-hidden="true" />
-                <span className="sr-only">Light</span>
-              </ToggleGroupItem>
-              <ToggleGroupItem value="dark" aria-label="Dark theme">
-                <Moon className="h-4 w-4" aria-hidden="true" />
-                <span className="sr-only">Dark</span>
-              </ToggleGroupItem>
-            </ToggleGroup>
           </div>
           {isAuthenticated && me ? (
             <DropdownMenu>

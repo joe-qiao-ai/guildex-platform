@@ -5720,6 +5720,17 @@ export const setSkillSoftDeletedInternal = internalMutation({
   },
 });
 
+export const updateSecurityScan = internalMutation({
+  args: {
+    skillId: v.id("skills"),
+    securityScan: v.union(v.literal("pending"), v.literal("safe"), v.literal("warning"), v.literal("rejected")),
+    securityScanReason: v.optional(v.string()),
+  },
+  handler: async (ctx, { skillId, securityScan, securityScanReason }) => {
+    await ctx.db.patch(skillId, { securityScan, securityScanReason });
+  },
+});
+
 function clampInt(value: number, min: number, max: number) {
   const rounded = Number.isFinite(value) ? Math.round(value) : min;
   return Math.min(max, Math.max(min, rounded));

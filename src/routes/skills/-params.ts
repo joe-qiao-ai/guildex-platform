@@ -1,11 +1,10 @@
 export const sortKeys = [
   "relevance",
-  "newest",
+  "rating",
   "downloads",
-  "installs",
-  "stars",
+  "trending",
+  "newest",
   "name",
-  "updated",
 ] as const;
 
 export type SortKey = (typeof sortKeys)[number];
@@ -24,5 +23,8 @@ export function parseDir(value: unknown, sort: SortKey): SortDir {
 }
 
 export function toListSort(sort: SortKey): ListSortKey {
-  return sort === "relevance" ? "downloads" : sort;
+  // "relevance", "rating", and "trending" are not direct DB sort keys;
+  // fall back to "downloads" for the page fetch (client re-sorts).
+  if (sort === "relevance" || sort === "rating" || sort === "trending") return "downloads";
+  return sort;
 }

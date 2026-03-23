@@ -33,6 +33,16 @@ const SHARED_KEYS = [
   "moderationReason",
   "createdAt",
   "updatedAt",
+  "bio",
+  "coreSkills",
+  "category",
+  "rating",
+  "trendingScore",
+  "verifiedCreator",
+  "keyQuote",
+  "title",
+  "categories",
+  "securityScan",
 ] as const satisfies readonly (keyof Doc<"skills"> & keyof Doc<"skillSearchDigest">)[];
 
 /** Fields stored in the skillSearchDigest table. */
@@ -43,6 +53,15 @@ export type SkillSearchDigestFields = Pick<Doc<"skills">, (typeof SHARED_KEYS)[n
   ownerName?: string;
   ownerDisplayName?: string;
   ownerImage?: string;
+  bio?: string;
+  coreSkills?: string[];
+  category?: string;
+  rating?: number;
+  trendingScore?: number;
+  verifiedCreator?: boolean;
+  keyQuote?: string;
+  title?: string;
+  categories?: string[];
 };
 
 /** Pick the subset of fields from a full skill doc needed for the digest. */
@@ -51,6 +70,14 @@ export function extractDigestFields(skill: Doc<"skills">): SkillSearchDigestFiel
     ...pick(skill, [...SHARED_KEYS]),
     skillId: skill._id,
     isSuspicious: skill.isSuspicious,
+    bio: skill.bio,
+    coreSkills: skill.coreSkills,
+    category: skill.category,
+    rating: skill.rating,
+    verifiedCreator: skill.verifiedCreator,
+    keyQuote: skill.keyQuote,
+    title: skill.title,
+    categories: skill.categories,
   };
 }
 
@@ -61,10 +88,13 @@ export function extractDigestFields(skill: Doc<"skills">): SkillSearchDigestFiel
  * to compile.
  */
 export function digestToHydratableSkill(digest: Doc<"skillSearchDigest">): HydratableSkill {
+  const base = pick(digest, [...SHARED_KEYS]);
   return {
-    ...pick(digest, [...SHARED_KEYS]),
+    ...base,
     _id: digest.skillId,
     _creationTime: digest.createdAt,
+    // Cast category from string to the union expected by HydratableSkill
+    category: base.category as HydratableSkill["category"],
   };
 }
 

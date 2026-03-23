@@ -22,6 +22,21 @@ export type PublicSkill = Pick<
   | "stats"
   | "createdAt"
   | "updatedAt"
+  // 名人分身 v2 enriched fields
+  | "bio"
+  | "personality"
+  | "keyQuote"
+  | "careerHighlights"
+  | "coreSkills"
+  | "featuredQuote"
+  | "category"
+  | "rating"
+  | "verifiedCreator"
+  // AI Twin v3 fields
+  | "title"
+  | "categories"
+  // Security scan
+  | "securityScan"
 >;
 
 /**
@@ -55,6 +70,23 @@ export type HydratableSkill = Pick<
   | "moderationReason"
   | "createdAt"
   | "updatedAt"
+  // 名人分身 v2 enriched fields
+  | "bio"
+  | "personality"
+  | "keyQuote"
+  | "careerHighlights"
+  | "coreSkills"
+  | "featuredQuote"
+  | "category"
+  | "rating"
+  | "trendingScore"
+  | "statsDownloads"
+  | "verifiedCreator"
+  // AI Twin v3 fields
+  | "title"
+  | "categories"
+  // Security scan
+  | "securityScan"
 >;
 
 export type PublicSoul = Pick<
@@ -68,6 +100,14 @@ export type PublicSoul = Pick<
   | "latestVersionId"
   | "tags"
   | "stats"
+  | "securityScan"
+  | "securityScanReason"
+  | "bio"
+  | "tagline"
+  | "personality"
+  | "coreSkills"
+  | "skillTags"
+  | "categories"
   | "createdAt"
   | "updatedAt"
 >;
@@ -120,6 +160,23 @@ export function toPublicSkill(skill: HydratableSkill | null | undefined): Public
     stats,
     createdAt: skill.createdAt,
     updatedAt: skill.updatedAt,
+    // 名人分身 v2 enriched fields
+    bio: skill.bio,
+    personality: skill.personality,
+    keyQuote: skill.keyQuote,
+    careerHighlights: skill.careerHighlights,
+    coreSkills: skill.coreSkills,
+    featuredQuote: skill.featuredQuote,
+    category: skill.category,
+    rating: skill.rating,
+    trendingScore: skill.trendingScore,
+    statsDownloads: typeof skill.statsDownloads === "number" ? skill.statsDownloads : undefined,
+    verifiedCreator: skill.verifiedCreator,
+    // AI Twin v3 fields
+    title: skill.title,
+    categories: skill.categories,
+    // Security scan
+    securityScan: skill.securityScan,
   };
 }
 
@@ -135,6 +192,14 @@ export function toPublicSoul(soul: Doc<"souls"> | null | undefined): PublicSoul 
     latestVersionId: soul.latestVersionId,
     tags: soul.tags,
     stats: soul.stats,
+    securityScan: soul.securityScan,
+    securityScanReason: soul.securityScanReason,
+    bio: soul.bio,
+    tagline: soul.tagline,
+    personality: soul.personality,
+    coreSkills: soul.coreSkills,
+    skillTags: soul.skillTags,
+    categories: soul.categories,
     createdAt: soul.createdAt,
     updatedAt: soul.updatedAt,
   };

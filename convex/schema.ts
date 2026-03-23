@@ -155,13 +155,48 @@ const skills = defineTable({
   statsStars: v.optional(v.number()),
   statsInstallsCurrent: v.optional(v.number()),
   statsInstallsAllTime: v.optional(v.number()),
+  // Guildex 新增字段
+  category: v.optional(v.union(
+    v.literal("Professional/Career"),
+    v.literal("Startup/Investment"),
+    v.literal("Famous Figure Style"),
+    v.literal("Lifestyle"),
+    v.literal("Education/Learning"),
+    v.literal("Creative Arts"),
+    v.literal("Health & Mind"),
+  )),
+  securityScan: v.optional(v.union(
+    v.literal("pending"),
+    v.literal("safe"),
+    v.literal("warning"),
+    v.literal("rejected"),
+  )),
+  securityScanReason: v.optional(v.string()),
+  verifiedCreator: v.optional(v.boolean()),
+  rating: v.optional(v.number()),
+  ratingCount: v.optional(v.number()),
+  trendingScore: v.optional(v.number()),
   stats: statsValidator,
+  // 名人分身新字段 v2
+  bio: v.optional(v.string()),
+  coreSkills: v.optional(v.array(v.string())),
+  personality: v.optional(v.string()),
+  workExperience: v.optional(v.string()),
+  skillTags: v.optional(v.array(v.string())),
+  featuredQuote: v.optional(v.string()),
+  keyQuote: v.optional(v.string()),
+  careerHighlights: v.optional(v.array(v.string())),
+  // AI Twin v3 字段
+  title: v.optional(v.string()),
+  categories: v.optional(v.array(v.string())),
   createdAt: v.number(),
   updatedAt: v.number(),
 })
   .index("by_slug", ["slug"])
   .index("by_owner", ["ownerUserId"])
   .index("by_updated", ["updatedAt"])
+  .index("by_rating", ["softDeletedAt", "rating"])
+  .index("by_trending", ["softDeletedAt", "trendingScore"])
   .index("by_stats_downloads", ["statsDownloads", "updatedAt"])
   .index("by_stats_stars", ["statsStars", "updatedAt"])
   .index("by_stats_installs_current", ["statsInstallsCurrent", "updatedAt"])
@@ -195,7 +230,8 @@ const skills = defineTable({
     "isSuspicious",
     "statsInstallsAllTime",
     "updatedAt",
-  ]);
+  ])
+  .index("by_category", ["softDeletedAt", "category", "updatedAt"]);
 
 const skillSlugAliases = defineTable({
   slug: v.string(),
@@ -216,6 +252,20 @@ const souls = defineTable({
   latestVersionId: v.optional(v.id("soulVersions")),
   tags: v.record(v.string(), v.id("soulVersions")),
   softDeletedAt: v.optional(v.number()),
+  securityScan: v.optional(v.union(
+    v.literal("pending"),
+    v.literal("safe"),
+    v.literal("warning"),
+    v.literal("rejected"),
+  )),
+  securityScanReason: v.optional(v.string()),
+  // Metadata extracted from README.md
+  bio: v.optional(v.string()),
+  tagline: v.optional(v.string()),
+  personality: v.optional(v.string()),
+  coreSkills: v.optional(v.array(v.string())),
+  skillTags: v.optional(v.array(v.string())),
+  categories: v.optional(v.array(v.string())),
   stats: v.object({
     downloads: v.number(),
     stars: v.number(),
@@ -435,6 +485,17 @@ const skillSearchDigest = defineTable({
   moderationFlags: v.optional(v.array(v.string())),
   moderationReason: v.optional(v.string()),
   isSuspicious: v.optional(v.boolean()),
+  category: v.optional(v.string()),
+  securityScan: v.optional(v.string()),
+  verifiedCreator: v.optional(v.boolean()),
+  rating: v.optional(v.number()),
+  ratingCount: v.optional(v.number()),
+  trendingScore: v.optional(v.number()),
+  bio: v.optional(v.string()),
+  coreSkills: v.optional(v.array(v.string())),
+  keyQuote: v.optional(v.string()),
+  title: v.optional(v.string()),
+  categories: v.optional(v.array(v.string())),
   createdAt: v.number(),
   updatedAt: v.number(),
 })
@@ -442,6 +503,8 @@ const skillSearchDigest = defineTable({
   .index("by_active_updated", ["softDeletedAt", "updatedAt"])
   .index("by_active_created", ["softDeletedAt", "createdAt"])
   .index("by_active_name", ["softDeletedAt", "displayName"])
+  .index("by_rating", ["softDeletedAt", "rating"])
+  .index("by_trending", ["softDeletedAt", "trendingScore"])
   .index("by_active_stats_downloads", ["softDeletedAt", "statsDownloads", "updatedAt"])
   .index("by_active_stats_stars", ["softDeletedAt", "statsStars", "updatedAt"])
   .index("by_active_stats_installs_all_time", [

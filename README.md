@@ -2,7 +2,7 @@
   <img src="public/clawd-logo.png" alt="ClawHub" width="120">
 </p>
 
-<h1 align="center">ClawHub</h1>
+<h1 align="center">Guild</h1>
 
 <p align="center">
   <a href="https://github.com/openclaw/clawhub/actions/workflows/ci.yml?branch=main"><img src="https://img.shields.io/github/actions/workflow/status/openclaw/clawhub/ci.yml?branch=main&style=for-the-badge" alt="CI status"></a>
@@ -10,10 +10,10 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License"></a>
 </p>
 
-ClawHub is the **public skill registry for Clawdbot**: publish, version, and search text-based agent skills (a `SKILL.md` plus supporting files).
+Guild is the **AI Talent Network**: publish, version, and search AI persona bundles (a `SOUL.md` plus supporting files).
 It's designed for fast browsing + a CLI-friendly API, with moderation hooks and vector search.
 
-onlycrabs.ai is the **SOUL.md registry**: publish and share system lore the same way you publish skills.
+onlycrabs.ai is the **SOUL.md registry**: publish and share system lore the same way you publish personas.
 
 <p align="center">
   <a href="https://clawhub.ai">ClawHub</a> ·

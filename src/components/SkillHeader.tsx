@@ -211,9 +211,7 @@ export function SkillHeader({
                 <strong>{PLATFORM_SKILL_LICENSE}</strong> · {PLATFORM_SKILL_LICENSE_SUMMARY}
               </div>
               <div className="stat">
-                ⭐ {formattedStats.stars} · <Package size={14} aria-hidden="true" />{" "}
-                {formattedStats.downloads} · {formatCompactStat(skill.stats.installsCurrent ?? 0)}{" "}
-                current installs · {formattedStats.installsAllTime} all-time installs
+                ⭐ {skill.rating?.toFixed(1) ?? "—"} · ↓ {(skill.stats?.downloads ?? 0).toLocaleString()}
               </div>
               <div className="stat">
                 <UserBadge
@@ -242,6 +240,13 @@ export function SkillHeader({
                     {canonical?.skill?.slug}
                   </a>
                 </div>
+              ) : null}
+              {skill.securityScan === "safe" ? (
+                <span className="security-badge security-badge--safe">✓ Verified Safe</span>
+              ) : skill.securityScan === "pending" ? (
+                <span className="security-badge security-badge--pending">⏳ Under Review</span>
+              ) : skill.securityScan === "warning" ? (
+                <span className="security-badge security-badge--warning">⚠ Flagged</span>
               ) : null}
               {getSkillBadges(skill).map((badge) => (
                 <div key={badge} className="tag">

@@ -209,14 +209,14 @@ describe("SkillsIndex", () => {
     });
   });
 
-  it("sorts search results by stars and breaks ties by updatedAt", async () => {
-    searchMock = { q: "remind", sort: "stars", dir: "desc" };
+  it("sorts search results by rating and breaks ties by updatedAt", async () => {
+    searchMock = { q: "remind", sort: "rating", dir: "desc" };
     const actionFn = vi
       .fn()
       .mockResolvedValue([
-        makeSearchEntry({ slug: "skill-a", displayName: "Skill A", stars: 5, updatedAt: 100 }),
-        makeSearchEntry({ slug: "skill-b", displayName: "Skill B", stars: 5, updatedAt: 200 }),
-        makeSearchEntry({ slug: "skill-c", displayName: "Skill C", stars: 4, updatedAt: 999 }),
+        makeSearchEntry({ slug: "skill-a", displayName: "Skill A", rating: 4.8, updatedAt: 100 }),
+        makeSearchEntry({ slug: "skill-b", displayName: "Skill B", rating: 4.8, updatedAt: 200 }),
+        makeSearchEntry({ slug: "skill-c", displayName: "Skill C", rating: 4.5, updatedAt: 999 }),
       ]);
     convexReactMocks.useAction.mockReturnValue(actionFn);
     vi.useFakeTimers();
@@ -402,7 +402,7 @@ function makeSearchResult(slug: string, displayName: string, score: number, crea
 function makeSearchEntry(params: {
   slug: string;
   displayName: string;
-  stars: number;
+  rating: number;
   updatedAt: number;
 }) {
   return {
@@ -413,11 +413,12 @@ function makeSearchEntry(params: {
       displayName: params.displayName,
       summary: `Summary ${params.slug}`,
       tags: {},
+      rating: params.rating,
       stats: {
         downloads: 0,
         installsCurrent: 0,
         installsAllTime: 0,
-        stars: params.stars,
+        stars: 0,
         versions: 1,
         comments: 0,
       },

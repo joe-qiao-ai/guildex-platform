@@ -27,6 +27,7 @@
     "verify:convex-contract": "bun scripts/verify-convex-contract.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
     "@auth/core": "^0.37.4",
     "@convex-dev/auth": "^0.0.91",
     "@fontsource/bricolage-grotesque": "^5.2.10",
