@@ -33,7 +33,7 @@ function getServerUrl(pathname: string) {
 export async function getMarkDataUrl() {
   if (!markDataUrlPromise) {
     markDataUrlPromise = (async () => {
-      const candidates = [getServerUrl("clawd-mark.png"), getServerUrl("public/clawd-mark.png")];
+      const candidates = [getServerUrl("guildex-mark.png"), getServerUrl("public/guildex-mark.png")];
       let lastError: unknown = null;
       for (const url of candidates) {
         try {
