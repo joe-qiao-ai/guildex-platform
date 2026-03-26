@@ -1660,12 +1660,12 @@ code {
 
 .hero-install-code {
   border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 250, 247, 0.9));
+  background: rgba(20, 20, 20, 0.95);
   border-radius: 12px;
   padding: 12px 14px;
   font-size: 0.9rem;
   line-height: 1.55;
-  color: var(--ink);
+  color: #a5b4fc;
   font-family: var(--font-mono);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;

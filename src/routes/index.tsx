@@ -130,7 +130,7 @@ function SkillsHome() {
 
       <section className="section">
         <h2 className="section-title">Popular AI Talent</h2>
-        <p className="section-subtitle">Most-downloaded, non-suspicious picks.</p>
+        <p className="section-subtitle">The most downloaded AI talent on the platform.</p>
         <div className="grid">
           {popular.length === 0 ? (
             <div className="card">No AI Talent yet. Be the first.</div>
