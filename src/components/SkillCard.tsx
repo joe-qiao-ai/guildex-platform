@@ -108,7 +108,7 @@ export function SkillCard({
   const extraCategoryCount = categories.length - 1;
 
   return (
-    <Link to={link} className="card persona-card" style={{ display: "flex", flexDirection: "column", aspectRatio: "1 / 1.15", padding: "14px" }}>
+    <Link to={link} className="card persona-card" style={{ display: "flex", flexDirection: "column", aspectRatio: "1 / 1.15", padding: "14px", minWidth: 0 }}>
       {/* Top row: avatar + name + title */}
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
         <Avatar name={name} size={36} />
