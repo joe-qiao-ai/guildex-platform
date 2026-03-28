@@ -4,107 +4,40 @@
  * POST /api/download
  * Body: { slug: string }
  *
- * Finds the skill/persona by slug, fetches its 5 files from GitHub,
- * increments download stats, and returns the file contents as JSON.
+ * Finds the skill/persona by slug, returns its file contents from DB as JSON.
+ * The frontend uses fflate to bundle these into a real ZIP for download.
  */
 
 import { v } from "convex/values";
 import { api, internal } from "./_generated/api";
-import { httpAction, internalMutation } from "./functions";
+import { httpAction, internalMutation, internalQuery } from "./functions";
 import { corsHeaders } from "./lib/httpHeaders";
 import { insertStatEvent } from "./skillStatEvents";
 
-// ── GitHub config ────────────────────────────────────────────────────────────
+// ── Internal query to fetch persona file contents ────────────────────────────
 
-const GITHUB_OWNER = "joe-qiao-ai";
-const GITHUB_REPO = "guildex-ai-talent";
-const GITHUB_BRANCH = "main";
-const GITHUB_RAW_BASE = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}`;
-
-const PERSONA_FILES = ["SOUL.md", "README.md", "SKILLS.md", "EXAMPLES.md", "TESTS.md"] as const;
-
-// ── Category → folder mapping ────────────────────────────────────────────────
-
-const CATEGORY_FOLDER_MAP: Record<string, string> = {
-  "Famous Figure Style": "famous-figures",
-  Engineering: "engineering",
-  "Tech & AI": "engineering",
-  Marketing: "marketing",
-  Design: "design",
-  "Product & Strategy": "product-strategy",
-  "Startup/Investment": "product-strategy",
-  "Investing & Finance": "product-strategy",
-  Entrepreneurship: "product-strategy",
-  "Leadership & Change": "product-strategy",
-  "Sales & Support": "sales-support",
-  "Sales & Influence": "sales-support",
-  "Game Development": "game-development",
-  "Academic & Specialized": "academic-specialized",
-  "Science & Learning": "academic-specialized",
-  "Writing & Media": "academic-specialized",
-  "Philosophy & Wisdom": "academic-specialized",
-  "Performance & Mindset": "health-mindset",
-  "Health & Mind": "health-mindset",
-};
-
-const ALL_CATEGORY_FOLDERS = [
-  "famous-figures",
-  "engineering",
-  "marketing",
-  "design",
-  "product-strategy",
-  "sales-support",
-  "game-development",
-  "academic-specialized",
-  "health-mindset",
-];
-
-/**
- * Resolve the GitHub folder for a given categories array.
- * Returns null if nothing maps, in which case caller tries all folders.
- */
-function resolveCategoryFolder(categories: string[] | undefined): string | null {
-  if (!categories || categories.length === 0) return null;
-  for (const cat of categories) {
-    const folder = CATEGORY_FOLDER_MAP[cat];
-    if (folder) return folder;
-  }
-  return null;
-}
-
-/**
- * Fetch a raw file from GitHub. Returns null on 404.
- */
-async function fetchGitHubFile(path: string): Promise<string | null> {
-  const url = `${GITHUB_RAW_BASE}/${path}`;
-  const res = await fetch(url);
-  if (res.status === 404) return null;
-  if (!res.ok) throw new Error(`GitHub fetch failed (${res.status}): ${url}`);
-  return res.text();
-}
-
-/**
- * Try to fetch files for a persona from a specific category folder.
- * Returns the files map if at least one file was found, otherwise null.
- */
-async function tryFetchPersonaFiles(
-  categoryFolder: string,
-  slug: string,
-): Promise<Record<string, string> | null> {
-  const files: Record<string, string> = {};
-  let anyFound = false;
-
-  for (const filename of PERSONA_FILES) {
-    const path = `${categoryFolder}/${slug}/${filename}`;
-    const content = await fetchGitHubFile(path);
-    if (content !== null) {
-      files[filename] = content;
-      anyFound = true;
-    }
-  }
-
-  return anyFound ? files : null;
-}
+export const getPersonaFiles = internalQuery({
+  args: { slug: v.string() },
+  handler: async (ctx, args) => {
+    const skill = await ctx.db
+      .query("skills")
+      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
+      .unique();
+    if (!skill) return null;
+    return {
+      _id: skill._id,
+      displayName: skill.displayName,
+      categories: (skill as any).categories ?? [],
+      soulContent: (skill as any).soulContent as string | undefined,
+      readmeContent: (skill as any).readmeContent as string | undefined,
+      skillsContent: (skill as any).skillsContent as string | undefined,
+      examplesContent: (skill as any).examplesContent as string | undefined,
+      testsContent: (skill as any).testsContent as string | undefined,
+      summary: skill.summary,
+      bio: (skill as any).bio as string | undefined,
+    };
+  },
+});
 
 // ── Internal mutation to bump stats ─────────────────────────────────────────
 
@@ -179,41 +112,27 @@ export const downloadPersonaHandler = httpAction(async (ctx, request) => {
     });
   }
 
-  // 1. Find skill by slug
-  const skillResult = await ctx.runQuery(api.skills.getBySlug, { slug });
-  if (!skillResult?.skill) {
+  // 1. Find skill by slug (use internal query to get content fields)
+  const skill = await ctx.runQuery(internal.downloadApi.getPersonaFiles, { slug });
+  if (!skill) {
     return new Response(JSON.stringify({ error: "Skill not found" }), {
       status: 404,
       headers: cors(),
     });
   }
 
-  const skill = skillResult.skill;
+  // 2. Build files map from stored DB content fields
+  const files: Record<string, string> = {};
+  if (skill.soulContent) files["SOUL.md"] = skill.soulContent;
+  if (skill.readmeContent) files["README.md"] = skill.readmeContent;
+  if (skill.skillsContent) files["SKILLS.md"] = skill.skillsContent;
+  if (skill.examplesContent) files["EXAMPLES.md"] = skill.examplesContent;
+  if (skill.testsContent) files["TESTS.md"] = skill.testsContent;
 
-  // 2. Resolve category folder from skill categories
-  const categoryFolder = resolveCategoryFolder(skill.categories);
-
-  let files: Record<string, string> | null = null;
-
-  if (categoryFolder) {
-    // Try the mapped folder first
-    files = await tryFetchPersonaFiles(categoryFolder, slug);
-  }
-
-  if (!files) {
-    // Fallback: search across all category folders
-    for (const folder of ALL_CATEGORY_FOLDERS) {
-      if (folder === categoryFolder) continue; // already tried
-      files = await tryFetchPersonaFiles(folder, slug);
-      if (files) break;
-    }
-  }
-
-  if (!files) {
-    return new Response(
-      JSON.stringify({ error: `Persona files not found in GitHub for slug: ${slug}` }),
-      { status: 404, headers: cors() },
-    );
+  // Fallback: use summary/bio if no content stored
+  if (Object.keys(files).length === 0) {
+    const fallback = skill.summary ?? skill.bio ?? "No content available.";
+    files["SOUL.md"] = fallback;
   }
 
   // 3. Update download stats (best-effort; don't fail the download on error)

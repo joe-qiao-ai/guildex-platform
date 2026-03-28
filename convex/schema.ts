@@ -160,6 +160,7 @@ const skills = defineTable({
     v.literal("Professional/Career"),
     v.literal("Startup/Investment"),
     v.literal("Famous Figure Style"),
+    v.literal("Legends"),
     v.literal("Lifestyle"),
     v.literal("Education/Learning"),
     v.literal("Creative Arts"),
@@ -189,6 +190,12 @@ const skills = defineTable({
   // AI Twin v3 字段
   title: v.optional(v.string()),
   categories: v.optional(v.array(v.string())),
+  // Persona file contents (stored for reliable ZIP download)
+  soulContent: v.optional(v.string()),
+  readmeContent: v.optional(v.string()),
+  skillsContent: v.optional(v.string()),
+  examplesContent: v.optional(v.string()),
+  testsContent: v.optional(v.string()),
   createdAt: v.number(),
   updatedAt: v.number(),
 })

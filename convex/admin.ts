@@ -1,3 +1,4 @@
+import { v } from "convex/values";
 import { internalMutation, internalQuery } from "./_generated/server";
 
 export const nukeAllData = internalMutation(async ({ db }) => {
@@ -184,4 +185,30 @@ export const fixLegendCategory = internalMutation(async ({ db }) => {
     }
   }
   return { fixed };
+});
+
+export const updatePersonaFiles = internalMutation({
+  args: {
+    slug: v.string(),
+    soulContent: v.optional(v.string()),
+    readmeContent: v.optional(v.string()),
+    skillsContent: v.optional(v.string()),
+    examplesContent: v.optional(v.string()),
+    testsContent: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const skill = await ctx.db
+      .query("skills")
+      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
+      .unique();
+    if (!skill) return { ok: false, error: "not found" };
+    const patch: Record<string, string | undefined> = {};
+    if (args.soulContent !== undefined) patch.soulContent = args.soulContent;
+    if (args.readmeContent !== undefined) patch.readmeContent = args.readmeContent;
+    if (args.skillsContent !== undefined) patch.skillsContent = args.skillsContent;
+    if (args.examplesContent !== undefined) patch.examplesContent = args.examplesContent;
+    if (args.testsContent !== undefined) patch.testsContent = args.testsContent;
+    await ctx.db.patch(skill._id, { ...patch, updatedAt: Date.now() } as any);
+    return { ok: true };
+  },
 });

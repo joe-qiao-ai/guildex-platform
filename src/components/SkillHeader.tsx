@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { strToU8, zipSync } from "fflate";
 import {
   type ClawdisSkillMetadata,
   PLATFORM_SKILL_LICENSE,
@@ -115,6 +116,33 @@ export function SkillHeader({
   osLabels,
 }: SkillHeaderProps) {
   const convexSiteUrl = getRuntimeEnv("VITE_CONVEX_SITE_URL") ?? "https://clawhub.ai";
+
+  const handleDownloadZip = async () => {
+    try {
+      const res = await fetch(`${convexSiteUrl}/api/download`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: skill.slug }),
+      });
+      if (!res.ok) throw new Error(`Download failed: ${res.status}`);
+      const data = await res.json();
+      const zipFiles: Record<string, Uint8Array> = {};
+      for (const [filename, content] of Object.entries(data.files as Record<string, string>)) {
+        zipFiles[filename] = strToU8(content);
+      }
+      const zipped = zipSync(zipFiles);
+      const blob = new Blob([zipped], { type: "application/zip" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${skill.slug}.zip`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download failed:", err);
+      alert("Download failed. Please try again.");
+    }
+  };
   const suppressScanResults =
     !isStaff &&
     Boolean(modInfo?.overrideActive) &&
@@ -297,12 +325,13 @@ export function SkillHeader({
                 <strong>v{latestVersion?.version ?? "—"}</strong>
               </div>
               {!nixPlugin && !modInfo?.isMalwareBlocked && !modInfo?.isRemoved ? (
-                <a
+                <button
                   className="btn btn-primary"
-                  href={`${convexSiteUrl}/api/v1/download?slug=${skill.slug}`}
+                  type="button"
+                  onClick={handleDownloadZip}
                 >
                   Download zip
-                </a>
+                </button>
               ) : null}
               <button
                 className={`btn${isStarred ? " btn-primary" : ""}`}
