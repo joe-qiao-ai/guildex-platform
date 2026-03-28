@@ -34,22 +34,22 @@ function Dashboard() {
     <main className="section">
       <div className="dashboard-header">
         <h1 className="section-title" style={{ margin: 0 }}>
-          My Skills
+          My AI Talent
         </h1>
         <Link to="/upload" search={{ updateSlug: undefined }} className="btn btn-primary">
           <Plus className="h-4 w-4" aria-hidden="true" />
-          Upload New Skill
+          Upload New AI Talent
         </Link>
       </div>
 
       {skills.length === 0 ? (
         <div className="card dashboard-empty">
           <Package className="dashboard-empty-icon" aria-hidden="true" />
-          <h2>No skills yet</h2>
-          <p>Upload your first skill to share it with the community.</p>
+          <h2>No AI Talent yet</h2>
+          <p>Upload your first AI Talent to share your expertise with the community.</p>
           <Link to="/upload" search={{ updateSlug: undefined }} className="btn btn-primary">
             <Upload className="h-4 w-4" aria-hidden="true" />
-            Upload a Skill
+            Upload AI Talent
           </Link>
         </div>
       ) : (

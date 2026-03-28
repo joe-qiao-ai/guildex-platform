@@ -36,7 +36,7 @@ export function Upload() {
   const siteMode = getSiteMode();
   const isSoulMode = siteMode === "souls";
   const requiredFileLabel = isSoulMode ? "SOUL.md" : "SKILL.md";
-  const contentLabel = isSoulMode ? "soul" : "skill";
+  const contentLabel = isSoulMode ? "soul" : "AI Talent";
 
   const generateUploadUrl = useMutation(api.uploads.generateUploadUrl);
   const publishVersion = useAction(
@@ -254,7 +254,7 @@ export function Upload() {
       issues.push("At least one tag is required.");
     }
     if (!isSoulMode && !acceptedLicenseTerms) {
-      issues.push("Accept the MIT-0 license terms to publish this skill.");
+      issues.push("Accept the MIT-0 license terms to publish this AI Talent.");
     }
     if (files.length === 0) {
       issues.push("Add at least one file.");
@@ -330,7 +330,7 @@ export function Upload() {
       return;
     }
     if (!isSoulMode && !acceptedLicenseTerms) {
-      setError("Accept the MIT-0 license terms to publish this skill.");
+      setError("Accept the MIT-0 license terms to publish this AI Talent.");
       return;
     }
     setError(null);
@@ -420,7 +420,7 @@ export function Upload() {
             id="slug"
             value={slug}
             onChange={(event) => setSlug(event.target.value)}
-            placeholder={`${contentLabel}-name`}
+            placeholder="my-ai-talent"
           />
 
           <label className="form-label" htmlFor="displayName">
@@ -431,7 +431,7 @@ export function Upload() {
             id="displayName"
             value={displayName}
             onChange={(event) => setDisplayName(event.target.value)}
-            placeholder={`My ${contentLabel}`}
+            placeholder="My AI Talent"
           />
 
           <label className="form-label" htmlFor="version">
@@ -559,7 +559,7 @@ export function Upload() {
           )}
           {slugCollision?.url ? (
             <div className="stat">
-              Existing skill:{" "}
+              Existing AI Talent:{" "}
               <a href={slugCollision.url} className="upload-link">
                 {slugCollision.url}
               </a>
@@ -576,8 +576,7 @@ export function Upload() {
                   {PLATFORM_SKILL_LICENSE} · {PLATFORM_SKILL_LICENSE_NAME}
                 </div>
                 <p className="upload-license-copy">
-                  All skills published on ClawHub are licensed under {PLATFORM_SKILL_LICENSE}.{" "}
-                  {PLATFORM_SKILL_LICENSE_SUMMARY}
+                  All AI Talent published on Guildex are licensed under MIT-0. Free to use, modify, and redistribute. No attribution required.
                 </p>
                 <label className="upload-license-check">
                   <input
@@ -586,7 +585,7 @@ export function Upload() {
                     onChange={(event) => setAcceptedLicenseTerms(event.target.checked)}
                   />
                   <span>
-                    I have the rights to this skill and agree to publish it under{" "}
+                    I have the rights to this AI Talent and agree to publish it under{" "}
                     {PLATFORM_SKILL_LICENSE}.
                   </span>
                 </label>
@@ -606,7 +605,7 @@ export function Upload() {
               setChangelogSource("user");
               setChangelog(event.target.value);
             }}
-            placeholder={`Describe what changed in this ${contentLabel}...`}
+            placeholder="Describe what changed in this AI Talent..."
           />
           {changelogStatus === "loading" ? <div className="stat">Generating changelog…</div> : null}
           {changelogStatus === "error" ? (

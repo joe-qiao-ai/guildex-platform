@@ -1,4 +1,4 @@
-import { internalMutation } from "./_generated/server";
+import { internalMutation, internalQuery } from "./_generated/server";
 
 export const nukeAllData = internalMutation(async ({ db }) => {
   const tables = ['skillSearchDigest', 'embeddingSkillMap', 'skillEmbeddings', 'skillVersions', 'skills'] as const;
@@ -163,4 +163,11 @@ export const syncSecurityScanToDigest = internalMutation(async ({ db }) => {
     }
   }
   return { synced };
+});
+
+export const debugEnv = internalQuery(async () => {
+  return {
+    AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID ?? "MISSING",
+    AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET ? "SET" : "MISSING",
+  };
 });

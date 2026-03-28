@@ -78,10 +78,10 @@ describe("Upload route", () => {
   it("enables publish when fields and files are valid", async () => {
     generateUploadUrl.mockResolvedValue("https://upload.local");
     render(<Upload />);
-    fireEvent.change(screen.getByPlaceholderText("skill-name"), {
+    fireEvent.change(screen.getByPlaceholderText("my-ai-talent"), {
       target: { value: "cool-skill" },
     });
-    fireEvent.change(screen.getByPlaceholderText("My skill"), {
+    fireEvent.change(screen.getByPlaceholderText("My AI Talent"), {
       target: { value: "Cool Skill" },
     });
     fireEvent.change(screen.getByPlaceholderText("1.0.0"), {
@@ -95,7 +95,7 @@ describe("Upload route", () => {
     fireEvent.change(input, { target: { files: [file] } });
     fireEvent.click(
       screen.getByRole("checkbox", {
-        name: /i have the rights to this skill and agree to publish it under mit-0/i,
+        name: /i have the rights to this ai talent and agree to publish it under mit-0/i,
       }),
     );
 
@@ -106,10 +106,10 @@ describe("Upload route", () => {
 
   it("extracts zip uploads and unwraps top-level folders", async () => {
     render(<Upload />);
-    fireEvent.change(screen.getByPlaceholderText("skill-name"), {
+    fireEvent.change(screen.getByPlaceholderText("my-ai-talent"), {
       target: { value: "cool-skill" },
     });
-    fireEvent.change(screen.getByPlaceholderText("My skill"), {
+    fireEvent.change(screen.getByPlaceholderText("My AI Talent"), {
       target: { value: "Cool Skill" },
     });
     fireEvent.change(screen.getByPlaceholderText("1.0.0"), {
@@ -130,7 +130,7 @@ describe("Upload route", () => {
     fireEvent.change(input, { target: { files: [zipFile] } });
     fireEvent.click(
       screen.getByRole("checkbox", {
-        name: /i have the rights to this skill and agree to publish it under mit-0/i,
+        name: /i have the rights to this ai talent and agree to publish it under mit-0/i,
       }),
     );
 
@@ -143,10 +143,10 @@ describe("Upload route", () => {
     generateUploadUrl.mockResolvedValue("https://upload.local");
     publishVersion.mockResolvedValue(undefined);
     render(<Upload />);
-    fireEvent.change(screen.getByPlaceholderText("skill-name"), {
+    fireEvent.change(screen.getByPlaceholderText("my-ai-talent"), {
       target: { value: "ynab" },
     });
-    fireEvent.change(screen.getByPlaceholderText("My skill"), {
+    fireEvent.change(screen.getByPlaceholderText("My AI Talent"), {
       target: { value: "YNAB" },
     });
     fireEvent.change(screen.getByPlaceholderText("1.0.0"), {
@@ -163,7 +163,7 @@ describe("Upload route", () => {
     fireEvent.change(input, { target: { files: [file] } });
     fireEvent.click(
       screen.getByRole("checkbox", {
-        name: /i have the rights to this skill and agree to publish it under mit-0/i,
+        name: /i have the rights to this ai talent and agree to publish it under mit-0/i,
       }),
     );
 
@@ -186,10 +186,10 @@ describe("Upload route", () => {
 
   it("blocks non-text folder uploads (png)", async () => {
     render(<Upload />);
-    fireEvent.change(screen.getByPlaceholderText("skill-name"), {
+    fireEvent.change(screen.getByPlaceholderText("my-ai-talent"), {
       target: { value: "cool-skill" },
     });
-    fireEvent.change(screen.getByPlaceholderText("My skill"), {
+    fireEvent.change(screen.getByPlaceholderText("My AI Talent"), {
       target: { value: "Cool Skill" },
     });
     fireEvent.change(screen.getByPlaceholderText("1.0.0"), {
@@ -214,10 +214,10 @@ describe("Upload route", () => {
 
   it("shows an informational note when mac junk files are ignored", async () => {
     render(<Upload />);
-    fireEvent.change(screen.getByPlaceholderText("skill-name"), {
+    fireEvent.change(screen.getByPlaceholderText("my-ai-talent"), {
       target: { value: "cool-skill" },
     });
-    fireEvent.change(screen.getByPlaceholderText("My skill"), {
+    fireEvent.change(screen.getByPlaceholderText("My AI Talent"), {
       target: { value: "Cool Skill" },
     });
     fireEvent.change(screen.getByPlaceholderText("1.0.0"), {
@@ -233,7 +233,7 @@ describe("Upload route", () => {
     fireEvent.change(input, { target: { files: [skill, junk] } });
     fireEvent.click(
       screen.getByRole("checkbox", {
-        name: /i have the rights to this skill and agree to publish it under mit-0/i,
+        name: /i have the rights to this ai talent and agree to publish it under mit-0/i,
       }),
     );
 
@@ -247,10 +247,10 @@ describe("Upload route", () => {
     publishVersion.mockRejectedValueOnce(new Error("Changelog is required"));
     generateUploadUrl.mockResolvedValue("https://upload.local");
     render(<Upload />);
-    fireEvent.change(screen.getByPlaceholderText("skill-name"), {
+    fireEvent.change(screen.getByPlaceholderText("my-ai-talent"), {
       target: { value: "cool-skill" },
     });
-    fireEvent.change(screen.getByPlaceholderText("My skill"), {
+    fireEvent.change(screen.getByPlaceholderText("My AI Talent"), {
       target: { value: "Cool Skill" },
     });
     fireEvent.change(screen.getByPlaceholderText("1.0.0"), {
@@ -259,7 +259,7 @@ describe("Upload route", () => {
     fireEvent.change(screen.getByPlaceholderText("latest, stable"), {
       target: { value: "latest" },
     });
-    fireEvent.change(screen.getByPlaceholderText("Describe what changed in this skill..."), {
+    fireEvent.change(screen.getByPlaceholderText("Describe what changed in this AI Talent..."), {
       target: { value: "Initial drop." },
     });
     const file = new File(["hello"], "SKILL.md", { type: "text/markdown" });
@@ -267,7 +267,7 @@ describe("Upload route", () => {
     fireEvent.change(input, { target: { files: [file] } });
     fireEvent.click(
       screen.getByRole("checkbox", {
-        name: /i have the rights to this skill and agree to publish it under mit-0/i,
+        name: /i have the rights to this ai talent and agree to publish it under mit-0/i,
       }),
     );
     const publishButton = screen.getByRole("button", { name: /publish/i }) as HTMLButtonElement;
@@ -296,10 +296,10 @@ describe("Upload route", () => {
     });
 
     render(<Upload />);
-    fireEvent.change(screen.getByPlaceholderText("skill-name"), {
+    fireEvent.change(screen.getByPlaceholderText("my-ai-talent"), {
       target: { value: "taken-skill" },
     });
-    fireEvent.change(screen.getByPlaceholderText("My skill"), {
+    fireEvent.change(screen.getByPlaceholderText("My AI Talent"), {
       target: { value: "Taken Skill" },
     });
     fireEvent.change(screen.getByPlaceholderText("1.0.0"), {
@@ -308,7 +308,7 @@ describe("Upload route", () => {
     fireEvent.change(screen.getByPlaceholderText("latest, stable"), {
       target: { value: "latest" },
     });
-    fireEvent.change(screen.getByPlaceholderText("Describe what changed in this skill..."), {
+    fireEvent.change(screen.getByPlaceholderText("Describe what changed in this AI Talent..."), {
       target: { value: "Initial drop." },
     });
     const file = new File(["hello"], "SKILL.md", { type: "text/markdown" });
