@@ -171,3 +171,17 @@ export const debugEnv = internalQuery(async () => {
     AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET ? "SET" : "MISSING",
   };
 });
+
+export const fixLegendCategory = internalMutation(async ({ db }) => {
+  const digests = await db.query("skillSearchDigest").collect();
+  let fixed = 0;
+  for (const digest of digests) {
+    const cats = (digest as any).categories as string[] | undefined;
+    if (cats && cats.includes("Famous Figure Style")) {
+      const newCats = cats.map((c: string) => c === "Famous Figure Style" ? "Legends" : c);
+      await db.patch(digest._id, { categories: newCats } as any);
+      fixed++;
+    }
+  }
+  return { fixed };
+});

@@ -59,7 +59,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "tech_wanderer_88",
     title: "Philosophy Teacher",
-    categories: ["Philosophy & Wisdom"],
+    categories: ["Legends", "Philosophy & Wisdom"],
   },
   {
     name: "Andy Grove",
@@ -74,7 +74,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "mindful_builder_io",
     title: "Paranoid Operator",
-    categories: ["Tech & AI", "Leadership & Change"],
+    categories: ["Legends", "Tech & AI", "Leadership & Change"],
   },
   {
     name: "Barack Obama",
@@ -89,7 +89,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "quiet_coder_42",
     title: "Transformational Leader",
-    categories: ["Leadership & Change"],
+    categories: ["Legends", "Leadership & Change"],
   },
   {
     name: "Bill Gates",
@@ -104,7 +104,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "deep_thinker_v2",
     title: "Tech Pioneer & Philanthropist",
-    categories: ["Tech & AI", "Leadership & Change"],
+    categories: ["Legends", "Tech & AI", "Leadership & Change"],
   },
   {
     name: "Brené Brown",
@@ -119,7 +119,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "starlight_dev",
     title: "Vulnerability Researcher",
-    categories: ["Philosophy & Wisdom", "Leadership & Change"],
+    categories: ["Legends", "Philosophy & Wisdom", "Leadership & Change"],
   },
   {
     name: "Carl Sagan",
@@ -134,7 +134,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "pixel_philosopher",
     title: "Astronomer & Science Communicator",
-    categories: ["Science & Learning", "Writing & Media"],
+    categories: ["Legends", "Science & Learning", "Writing & Media"],
   },
   {
     name: "Chris Voss",
@@ -149,7 +149,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "async_dreamer",
     title: "Negotiation Coach",
-    categories: ["Sales & Influence", "Leadership & Change"],
+    categories: ["Legends", "Sales & Influence", "Leadership & Change"],
   },
   {
     name: "David Goggins",
@@ -164,7 +164,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "lambda_thinker",
     title: "Mental Toughness Coach",
-    categories: ["Performance & Mindset"],
+    categories: ["Legends", "Performance & Mindset"],
   },
   {
     name: "David Ogilvy",
@@ -179,7 +179,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "neural_nomad_x",
     title: "Advertising Legend",
-    categories: ["Writing & Media", "Sales & Influence"],
+    categories: ["Legends", "Writing & Media", "Sales & Influence"],
   },
   {
     name: "Friedrich Nietzsche",
@@ -194,7 +194,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "flow_state_99",
     title: "Existential Philosopher",
-    categories: ["Philosophy & Wisdom"],
+    categories: ["Legends", "Philosophy & Wisdom"],
   },
   {
     name: "Gary Vaynerchuk",
@@ -209,7 +209,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "syntax_sage",
     title: "Entrepreneur & Investor",
-    categories: ["Entrepreneurship", "Sales & Influence"],
+    categories: ["Legends", "Entrepreneurship", "Sales & Influence"],
   },
   {
     name: "George Soros",
@@ -224,7 +224,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "zero_to_hero_dev",
     title: "Global Macro Investor",
-    categories: ["Investing & Finance"],
+    categories: ["Legends", "Investing & Finance"],
   },
   {
     name: "Gordon Ramsay",
@@ -239,7 +239,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "recursive_mind",
     title: "Michelin-Star Chef",
-    categories: ["Performance & Mindset", "Leadership & Change"],
+    categories: ["Legends", "Performance & Mindset", "Leadership & Change"],
   },
   {
     name: "Indra Nooyi",
@@ -254,7 +254,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "pattern_seeker_7",
     title: "Global CEO",
-    categories: ["Leadership & Change", "Entrepreneurship"],
+    categories: ["Legends", "Leadership & Change", "Entrepreneurship"],
   },
   {
     name: "Jack Welch",
@@ -269,7 +269,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "binary_humanist",
     title: "CEO Coach",
-    categories: ["Leadership & Change", "Entrepreneurship"],
+    categories: ["Legends", "Leadership & Change", "Entrepreneurship"],
   },
   {
     name: "Jony Ive",
@@ -284,7 +284,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "context_switcher",
     title: "Industrial Designer",
-    categories: ["Tech & AI", "Writing & Media"],
+    categories: ["Legends", "Tech & AI", "Writing & Media"],
   },
   {
     name: "Jordan B. Peterson",
@@ -299,7 +299,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "infinite_loop_me",
     title: "Clinical Psychologist",
-    categories: ["Philosophy & Wisdom", "Science & Learning"],
+    categories: ["Legends", "Philosophy & Wisdom", "Science & Learning"],
   },
   {
     name: "Mahatma Gandhi",
@@ -314,7 +314,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "commit_to_growth",
     title: "Nonviolent Resistance Pioneer",
-    categories: ["Leadership & Change", "Philosophy & Wisdom"],
+    categories: ["Legends", "Leadership & Change", "Philosophy & Wisdom"],
   },
   {
     name: "Marc Andreessen",
@@ -329,7 +329,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "abstract_concrete",
     title: "Tech Venture Capitalist",
-    categories: ["Tech & AI", "Investing & Finance"],
+    categories: ["Legends", "Tech & AI", "Investing & Finance"],
   },
   {
     name: "Mark Zuckerberg",
@@ -344,7 +344,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "meta_learner_21",
     title: "Social Platform Builder",
-    categories: ["Tech & AI", "Entrepreneurship"],
+    categories: ["Legends", "Tech & AI", "Entrepreneurship"],
   },
   {
     name: "Martin Luther King Jr.",
@@ -359,7 +359,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "curious_architect",
     title: "Civil Rights Leader",
-    categories: ["Leadership & Change", "Philosophy & Wisdom"],
+    categories: ["Legends", "Leadership & Change", "Philosophy & Wisdom"],
   },
   {
     name: "Masayoshi Son",
@@ -374,7 +374,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "signal_noise_dev",
     title: "Vision Fund Investor",
-    categories: ["Investing & Finance", "Entrepreneurship"],
+    categories: ["Legends", "Investing & Finance", "Entrepreneurship"],
   },
   {
     name: "Peter Attia",
@@ -389,7 +389,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "cognitive_coder",
     title: "Longevity Physician",
-    categories: ["Science & Learning"],
+    categories: ["Legends", "Science & Learning"],
   },
   {
     name: "Peter Lynch",
@@ -404,7 +404,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "edge_case_explorer",
     title: "Stock Picker",
-    categories: ["Investing & Finance"],
+    categories: ["Legends", "Investing & Finance"],
   },
   {
     name: "Phil Jackson",
@@ -419,7 +419,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "first_principles_io",
     title: "Championship Coach",
-    categories: ["Leadership & Change", "Performance & Mindset"],
+    categories: ["Legends", "Leadership & Change", "Performance & Mindset"],
   },
   {
     name: "Reed Hastings",
@@ -434,7 +434,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "mental_model_me",
     title: "Culture Builder",
-    categories: ["Tech & AI", "Leadership & Change"],
+    categories: ["Legends", "Tech & AI", "Leadership & Change"],
   },
   {
     name: "Reid Hoffman",
@@ -449,7 +449,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "clarity_seeker_x",
     title: "Network Strategist",
-    categories: ["Entrepreneurship", "Tech & AI"],
+    categories: ["Legends", "Entrepreneurship", "Tech & AI"],
   },
   {
     name: "Seth Godin",
@@ -464,7 +464,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "build_in_public_37",
     title: "Marketing Philosopher",
-    categories: ["Writing & Media", "Sales & Influence"],
+    categories: ["Legends", "Writing & Media", "Sales & Influence"],
   },
   {
     name: "Sheryl Sandberg",
@@ -479,7 +479,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "serial_learner_v3",
     title: "Tech Executive",
-    categories: ["Entrepreneurship", "Leadership & Change"],
+    categories: ["Legends", "Entrepreneurship", "Leadership & Change"],
   },
   {
     name: "Winston Churchill",
@@ -494,7 +494,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "calibrated_mind",
     title: "Wartime Orator",
-    categories: ["Leadership & Change"],
+    categories: ["Legends", "Leadership & Change"],
   },
   {
     name: "Andrew Huberman",
@@ -509,7 +509,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "thoughtful_hacker",
     title: "Neuroscientist",
-    categories: ["Science & Learning", "Performance & Mindset"],
+    categories: ["Legends", "Science & Learning", "Performance & Mindset"],
   },
   {
     name: "Charlie Munger",
@@ -524,7 +524,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "distilled_wisdom",
     title: "Multidisciplinary Thinker",
-    categories: ["Investing & Finance", "Philosophy & Wisdom"],
+    categories: ["Legends", "Investing & Finance", "Philosophy & Wisdom"],
   },
   {
     name: "Dale Carnegie",
@@ -539,7 +539,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "open_source_soul",
     title: "Human Relations Expert",
-    categories: ["Leadership & Change", "Sales & Influence"],
+    categories: ["Legends", "Leadership & Change", "Sales & Influence"],
   },
   {
     name: "Elon Musk",
@@ -554,7 +554,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "knowledge_graph_k",
     title: "Serial Entrepreneur",
-    categories: ["Tech & AI", "Entrepreneurship"],
+    categories: ["Legends", "Tech & AI", "Entrepreneurship"],
   },
   {
     name: "Grant Cardone",
@@ -569,7 +569,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "systems_thinker_s",
     title: "Sales Trainer",
-    categories: ["Sales & Influence", "Entrepreneurship"],
+    categories: ["Legends", "Sales & Influence", "Entrepreneurship"],
   },
   {
     name: "James Clear",
@@ -584,7 +584,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "fractal_founder",
     title: "Habit Expert",
-    categories: ["Performance & Mindset", "Writing & Media"],
+    categories: ["Legends", "Performance & Mindset", "Writing & Media"],
   },
   {
     name: "Malcolm Gladwell",
@@ -599,7 +599,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "compounding_kai",
     title: "Social Science Writer",
-    categories: ["Writing & Media", "Philosophy & Wisdom"],
+    categories: ["Legends", "Writing & Media", "Philosophy & Wisdom"],
   },
   {
     name: "Nassim Nicholas Taleb",
@@ -614,7 +614,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "resonance_riley",
     title: "Risk Philosopher",
-    categories: ["Investing & Finance", "Philosophy & Wisdom"],
+    categories: ["Legends", "Investing & Finance", "Philosophy & Wisdom"],
   },
   {
     name: "Naval Ravikant",
@@ -629,7 +629,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "threshold_theo",
     title: "Angel Investor & Philosopher",
-    categories: ["Entrepreneurship", "Philosophy & Wisdom"],
+    categories: ["Legends", "Entrepreneurship", "Philosophy & Wisdom"],
   },
   {
     name: "Paul Graham",
@@ -644,7 +644,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "emergence_eli",
     title: "Startup Mentor",
-    categories: ["Entrepreneurship", "Writing & Media"],
+    categories: ["Legends", "Entrepreneurship", "Writing & Media"],
   },
   {
     name: "Peter Thiel",
@@ -659,7 +659,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "synthesis_sam",
     title: "Contrarian VC",
-    categories: ["Investing & Finance", "Entrepreneurship"],
+    categories: ["Legends", "Investing & Finance", "Entrepreneurship"],
   },
   {
     name: "Ray Dalio",
@@ -674,7 +674,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "catalyst_casey",
     title: "Macro Investor",
-    categories: ["Investing & Finance", "Leadership & Change"],
+    categories: ["Legends", "Investing & Finance", "Leadership & Change"],
   },
   {
     name: "Richard Feynman",
@@ -689,7 +689,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "polaris_parker",
     title: "Theoretical Physicist",
-    categories: ["Science & Learning"],
+    categories: ["Legends", "Science & Learning"],
   },
   {
     name: "Ryan Holiday",
@@ -704,7 +704,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "meridian_morgan",
     title: "Stoic Philosopher",
-    categories: ["Philosophy & Wisdom", "Writing & Media"],
+    categories: ["Legends", "Philosophy & Wisdom", "Writing & Media"],
   },
   {
     name: "Sam Altman",
@@ -719,7 +719,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "axiom_alex",
     title: "AI Pioneer",
-    categories: ["Tech & AI", "Entrepreneurship"],
+    categories: ["Legends", "Tech & AI", "Entrepreneurship"],
   },
   {
     name: "Stephen King",
@@ -734,7 +734,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "inflection_iris",
     title: "Master Storyteller",
-    categories: ["Writing & Media"],
+    categories: ["Legends", "Writing & Media"],
   },
   {
     name: "Steve Jobs",
@@ -749,7 +749,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "momentum_miles",
     title: "Product Visionary",
-    categories: ["Tech & AI", "Leadership & Change"],
+    categories: ["Legends", "Tech & AI", "Leadership & Change"],
   },
   {
     name: "Tim Ferriss",
@@ -764,7 +764,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "latitude_leo",
     title: "Lifestyle Designer",
-    categories: ["Performance & Mindset", "Entrepreneurship"],
+    categories: ["Legends", "Performance & Mindset", "Entrepreneurship"],
   },
   {
     name: "Warren Buffett",
@@ -779,7 +779,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "prism_phoenix",
     title: "Value Investor",
-    categories: ["Investing & Finance"],
+    categories: ["Legends", "Investing & Finance"],
   },
   {
     name: "Yuval Noah Harari",
@@ -794,7 +794,7 @@ const CELEBRITY_PERSONA_SEEDS: CelebrityPersonaSeed[] = [
     category: "Legends" as const,
     creator: "orbit_oliver",
     title: "Macro Historian",
-    categories: ["Philosophy & Wisdom", "Writing & Media"],
+    categories: ["Legends", "Philosophy & Wisdom", "Writing & Media"],
   }
 ];
 
