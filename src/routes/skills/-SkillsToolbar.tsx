@@ -10,7 +10,7 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
 
 const CATEGORIES = [
   { value: "all", label: "All Categories" },
-  { value: "Famous Figure Style", label: "Famous Figure" },
+  { value: "Legends", label: "Legends" },
   { value: "Tech & AI", label: "Tech & AI" },
   { value: "Engineering", label: "Engineering" },
   { value: "Marketing", label: "Marketing" },

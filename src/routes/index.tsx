@@ -36,7 +36,7 @@ function SkillsHome() {
   const totalSkillsText =
     typeof totalSkills === "number" ? totalSkills.toLocaleString("en-US") : null;
   const CATEGORIES = [
-    { label: "Famous Figure Style", darkColor: "rgba(139,92,246,0.15)" },
+    { label: "Legends", darkColor: "rgba(139,92,246,0.15)" },
     { label: "Investing & Finance", darkColor: "rgba(16,185,129,0.15)" },
     { label: "Tech & AI", darkColor: "rgba(59,130,246,0.15)" },
     { label: "Entrepreneurship", darkColor: "rgba(249,115,22,0.15)" },
