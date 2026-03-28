@@ -82,7 +82,7 @@ export default function Header() {
           <Link to="/upload" search={{ updateSlug: undefined }}>
             Upload
           </Link>
-          {me ? <Link to="/stars">Stars</Link> : null}
+          {me ? <Link to="/stars">Saved</Link> : null}
           {isStaff ? (
             <Link to="/management" search={{ skill: undefined }}>
               Management
@@ -118,7 +118,7 @@ export default function Header() {
                 </DropdownMenuItem>
                 {me ? (
                   <DropdownMenuItem asChild>
-                    <Link to="/stars">Stars</Link>
+                    <Link to="/stars">Saved</Link>
                   </DropdownMenuItem>
                 ) : null}
                 {isStaff ? (

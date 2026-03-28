@@ -28,11 +28,11 @@ function Stars() {
 
   return (
     <main className="section">
-      <h1 className="section-title">Your highlights</h1>
-      <p className="section-subtitle">Skills you’ve starred for quick access.</p>
+      <h1 className="section-title">Saved AI Talent</h1>
+      <p className="section-subtitle">AI Talent you’ve saved for quick access.</p>
       <div className="grid">
         {skills.length === 0 ? (
-          <div className="card">No stars yet.</div>
+          <div className="card">No saved talent yet.</div>
         ) : (
           skills.map((skill) => {
             const owner = encodeURIComponent(String(skill.ownerUserId));
@@ -54,7 +54,7 @@ function Stars() {
                         window.alert("Unable to unstar this skill. Please try again.");
                       }
                     }}
-                    aria-label={`Unstar ${skill.displayName}`}
+                    aria-label={`Unsave ${skill.displayName}`}
                   >
                     <span aria-hidden="true">★</span>
                   </button>

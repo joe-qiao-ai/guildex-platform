@@ -260,16 +260,6 @@ export function SkillHeader({
               ) : null}
               <div className="skill-actions">
                 {isAuthenticated ? (
-                  <button
-                    className={`star-toggle${isStarred ? " is-active" : ""}`}
-                    type="button"
-                    onClick={onToggleStar}
-                    aria-label={isStarred ? "Unstar skill" : "Star skill"}
-                  >
-                    <span aria-hidden="true">★</span>
-                  </button>
-                ) : null}
-                {isAuthenticated ? (
                   <button className="btn btn-ghost" type="button" onClick={onOpenReport}>
                     Report
                   </button>
@@ -314,6 +304,29 @@ export function SkillHeader({
                   Download zip
                 </a>
               ) : null}
+              <button
+                className={`btn${isStarred ? " btn-primary" : ""}`}
+                type="button"
+                style={
+                  isStarred
+                    ? {}
+                    : {
+                        background: "transparent",
+                        border: "1px solid var(--color-border, #e5e7eb)",
+                        color: "var(--color-text-muted, #6b7280)",
+                      }
+                }
+                onClick={() => {
+                  if (!isAuthenticated) {
+                    window.alert("Sign in to save AI Talent");
+                    return;
+                  }
+                  onToggleStar();
+                }}
+                aria-label={isStarred ? "Unsave AI Talent" : "Save AI Talent"}
+              >
+                {isStarred ? "❤️ Saved" : "🤍 Save"}
+              </button>
             </div>
           </div>
           {hasPluginBundle ? (
