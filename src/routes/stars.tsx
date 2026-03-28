@@ -1,9 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import type { Doc } from "../../convex/_generated/dataModel";
-import { formatCompactStat } from "../lib/numberFormat";
 import type { PublicSkill } from "../lib/publicUser";
+import { SkillCard } from "../components/SkillCard";
 
 export const Route = createFileRoute("/stars")({
   component: Stars,
@@ -16,8 +16,6 @@ function Stars() {
       | PublicSkill[]
       | undefined) ?? [];
 
-  const toggleStar = useMutation(api.stars.toggle);
-
   if (!me) {
     return (
       <main className="section">
@@ -29,39 +27,19 @@ function Stars() {
   return (
     <main className="section">
       <h1 className="section-title">Saved AI Talent</h1>
-      <p className="section-subtitle">AI Talent you’ve saved for quick access.</p>
+      <p className="section-subtitle">AI Talent you've saved for quick access.</p>
       <div className="grid">
         {skills.length === 0 ? (
           <div className="card">No saved talent yet.</div>
         ) : (
-          skills.map((skill) => {
-            const owner = encodeURIComponent(String(skill.ownerUserId));
-            return (
-              <div key={skill._id} className="card skill-card">
-                <Link to="/$owner/$slug" params={{ owner, slug: skill.slug }}>
-                  <h3 className="skill-card-title">{skill.displayName}</h3>
-                </Link>
-                <div className="skill-card-footer skill-card-footer-inline">
-                  <span className="stat">⭐ {formatCompactStat(skill.stats.stars)}</span>
-                  <button
-                    className="star-toggle is-active"
-                    type="button"
-                    onClick={async () => {
-                      try {
-                        await toggleStar({ skillId: skill._id });
-                      } catch (error) {
-                        console.error("Failed to unstar skill:", error);
-                        window.alert("Unable to unstar this skill. Please try again.");
-                      }
-                    }}
-                    aria-label={`Unsave ${skill.displayName}`}
-                  >
-                    <span aria-hidden="true">★</span>
-                  </button>
-                </div>
-              </div>
-            );
-          })
+          skills.map((skill) => (
+            <SkillCard
+              key={skill._id}
+              skill={skill}
+              summaryFallback="Agent-ready AI Talent pack."
+              meta={null}
+            />
+          ))
         )}
       </div>
     </main>
